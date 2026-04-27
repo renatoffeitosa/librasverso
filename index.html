@@ -7,6 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- preload: garante que as imagens locais sejam buscadas com prioridade máxima -->
+  <link rel="preload" as="image" href="./assets/images/librasverso5.png" />
+  <link rel="preload" as="image" href="./assets/images/Retângulo 01.png" />
+  <link rel="preload" as="image" href="./assets/images/Retângulo 02.png" />
+  <link rel="preload" as="image" href="./assets/images/Retângulo 03.png" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -788,13 +793,13 @@
       <div class="apres-cards" id="apresCarousel">
         <!-- data-pos inicial: 0=frente 1=direita 2=esquerda -->
         <div class="apres-card" data-pos="0">
-          <img src="/assets/images/Retângulo 02.png" alt="Intérprete de LIBRAS" />
+          <img src="./assets/images/Retângulo 02.png" onerror="this.onerror=null;this.src='/assets/images/Retângulo 02.png'" alt="Intérprete de LIBRAS" />
         </div>
         <div class="apres-card" data-pos="1">
-          <img src="/assets/images/Retângulo 03.png" alt="Criança aprendendo LIBRAS" />
+          <img src="./assets/images/Retângulo 03.png" onerror="this.onerror=null;this.src='/assets/images/Retângulo 03.png'" alt="Criança aprendendo LIBRAS" />
         </div>
         <div class="apres-card" data-pos="2">
-          <img src="/assets/images/Retângulo 01.png" alt="Pessoa comunicando em LIBRAS" />
+          <img src="./assets/images/Retângulo 01.png" onerror="this.onerror=null;this.src='/assets/images/Retângulo 01.png'" alt="Pessoa comunicando em LIBRAS" />
         </div>
       </div>
       <!-- dots de progresso -->
@@ -893,7 +898,7 @@
 
   <!-- LIA -->
   <section id="avatares">
-    <img class="lia-bg" src="assets/images/librasverso5.png" alt="Lia – intérprete virtual" />
+    <img class="lia-bg" src="./assets/images/librasverso5.png" onerror="this.onerror=null;this.src='/assets/images/librasverso5.png'" alt="Lia – intérprete virtual" />
     <div class="lia-content">
       <h2>Aprenda com a <span>Lia</span></h2>
       <p>
