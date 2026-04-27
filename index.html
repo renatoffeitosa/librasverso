@@ -1,1386 +1,1013 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LibrasVerso — Aprenda LIBRAS em 3D</title>
-  <meta name="description" content="Uma plataforma tridimensional para introdução ao ensino da Língua Brasileira de Sinais. Aprenda o alfabeto manual de forma interativa e divertida.">
-  <meta property="og:title" content="LibrasVerso — Aprenda LIBRAS em 3D">
-  <meta property="og:description" content="Plataforma tridimensional para o ensino de LIBRAS. Aprenda, explore e se comunique.">
-  <meta property="og:type" content="website">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LibrasVerso – Aprenda LIBRAS em 3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ─── RESET & BASE ─────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:          #FFFFFF;
-      --bg2:         #EDEDED;
-      --bg3:         #F5F4FA;
-      --card:        rgba(135,117,201,0.05);
-      --card-border: rgba(135,117,201,0.15);
-      --purple:      #8775C9;
-      --purple-dark: #602D8E;
-      --purple-dim:  rgba(135,117,201,0.1);
-      --teal:        #00EDD6;
-      --teal-dim:    rgba(0,237,214,0.12);
-      --text:        #111111;
-      --muted:       #757575;
-      --heading:     'Inter', sans-serif;
-      --body:        'Inter', sans-serif;
-      --radius:      16px;
-      --radius-sm:   10px;
-      --transition:  0.35s cubic-bezier(.4,0,.2,1);
-      --cta-gradient:
-        linear-gradient(180deg, var(--purple-dark) 28.68%, rgba(96,45,142,0) 86.03%),
-        linear-gradient(115deg, var(--teal) 9.97%, var(--purple) 99.02%, var(--purple-dark) 158.38%);
+      --lilac:    #8775c9;
+      --lilac-light: #c4b8ef;
+      --purple:   #602d8e;
+      --teal:     #00edd6;
+      --white:    #ffffff;
+      --gray-bg:  #f4f2fb;
+      --gray-light: #ededed;
+      --text:     #1a1a1a;
+      --cta-gradient: linear-gradient(115deg, #00edd6 10%, #8775c9 80%, #602d8e 140%);
+      --cta-overlay:  linear-gradient(to bottom, rgba(96,45,142,0.35) 0%, rgba(96,45,142,0) 100%);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
+      font-family: 'Inter', sans-serif;
       color: var(--text);
-      font-family: var(--body);
-      font-size: 16px;
-      line-height: 1.7;
+      background: var(--white);
       overflow-x: hidden;
     }
 
-    /* noise removed for light theme */
-
-    /* ─── SCROLLBAR ─────────────────────────────────────────── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg2); }
-    ::-webkit-scrollbar-thumb { background: var(--purple-dim); border-radius: 99px; }
-
-    /* ─── TYPOGRAPHY ────────────────────────────────────────── */
-    h1, h2, h3, h4 {
-      font-family: var(--heading);
-      line-height: 1.15;
-      font-weight: 700;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    /* ─── LAYOUT HELPERS ────────────────────────────────────── */
-    .container {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-    .container-sm { max-width: 760px; margin: 0 auto; padding: 0 24px; }
-
-    section { position: relative; z-index: 1; }
-
-    /* ─── GLOW BLOBS ────────────────────────────────────────── */
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .blob-mint  { background: rgba(135,117,201,0.1); }
-    .blob-orange { background: rgba(0,237,214,0.08); }
-
-    /* ─── NAVBAR ────────────────────────────────────────────── */
-    #navbar {
-      position: fixed; top: 0; left: 0; right: 0;
+    /* ── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
       z-index: 100;
-      padding: 0 24px;
-      transition: background var(--transition), box-shadow var(--transition);
-    }
-    #navbar {
-      background: var(--bg);
-      box-shadow: 0 1px 0 rgba(135,117,201,0.1);
-    }
-    #navbar.scrolled {
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 2px 20px rgba(135,117,201,0.15);
-    }
-    .nav-inner {
-      max-width: 1140px;
-      margin: 0 auto;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(135,117,201,0.12);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 72px;
+      padding: 0 5%;
+      height: 80px;
+      box-shadow: 0 2px 20px rgba(135,117,201,0.08);
     }
-    .nav-logo {
-      font-family: var(--heading);
-      font-size: 1.35rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+
+    .nav-logo img {
+      height: 40px;
+      width: auto;
+      max-width: 200px;
+      display: block;
+      object-fit: contain;
     }
-    .nav-logo .logo-icon {
-      width: 36px; height: 36px;
-      background: var(--cta-gradient);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-    }
-    .nav-logo .logo-text span { color: var(--purple); }
+
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 36px;
       list-style: none;
     }
+
     .nav-links a {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--muted);
-      padding: 8px 14px;
-      border-radius: var(--radius-sm);
-      transition: color var(--transition), background var(--transition);
+      text-decoration: none;
+      font-size: 15px;
       font-weight: 400;
-    }
-    .nav-links a:hover {
-      color: var(--purple);
-      background: var(--purple-dim);
-    }
-    .btn-nav {
-      background: var(--cta-gradient) !important;
-      color: #fff !important;
-      font-weight: 700 !important;
-      padding: 9px 20px !important;
-      border-radius: 100px !important;
-      border: 3px solid var(--purple) !important;
-      font-size: 0.85rem !important;
-      transition: opacity var(--transition), transform var(--transition) !important;
-      box-shadow: 0 4px 20px rgba(135,117,201,0.3);
-    }
-    .btn-nav:hover { opacity: 0.88; transform: translateY(-1px); }
-    .nav-hamburger {
-      display: none;
-      flex-direction: column; gap: 5px;
-      cursor: pointer; padding: 4px;
-    }
-    .nav-hamburger span {
-      display: block; width: 22px; height: 2px;
-      background: var(--purple); border-radius: 2px;
-      transition: var(--transition);
+      color: var(--text);
+      transition: color 0.2s;
     }
 
-    /* ─── BUTTONS ────────────────────────────────────────────── */
-    .btn {
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--lilac);
+      font-weight: 700;
+    }
+
+    /* ── BOTÕES CTA ──────────────────────────────────────── */
+    .btn-cta {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      font-family: var(--heading);
+      background: var(--cta-gradient);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
       font-weight: 700;
-      font-size: 1rem;
-      padding: 14px 32px;
-      border-radius: 100px;
-      cursor: pointer;
+      font-size: 15px;
+      line-height: 1;
       border: none;
+      border-radius: 100px;
+      padding: 13px 28px;
+      cursor: pointer;
       text-decoration: none;
-      transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+      box-shadow: 0 4px 18px rgba(96,45,142,0.28);
+      white-space: nowrap;
     }
-    .btn:hover { transform: translateY(-2px); }
 
-    .btn-primary {
-      background: var(--cta-gradient);
-      color: #fff;
-      border: 3px solid var(--purple);
-      box-shadow: 0 8px 30px rgba(135,117,201,0.35);
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(96,45,142,0.38);
+      filter: brightness(1.06);
     }
-    .btn-primary:hover { box-shadow: 0 12px 40px rgba(135,117,201,0.5); opacity: 0.92; }
 
-    .btn-secondary {
-      background: transparent;
-      color: var(--purple);
-      border: 2px solid var(--purple);
+    /* Variante para CTAs de seção – tamanho único, consistente */
+    .btn-cta--primary {
+      font-size: 17px;
+      padding: 16px 40px;
+      box-shadow: 0 6px 24px rgba(96,45,142,0.3);
     }
-    .btn-secondary:hover { background: var(--purple-dim); border-color: var(--purple-dark); }
 
-    .btn-orange {
-      background: var(--cta-gradient);
-      color: #fff;
-      border: 3px solid var(--purple);
-      box-shadow: 0 8px 30px rgba(135,117,201,0.35);
+    /* Seta SVG inline dentro do botão */
+    .btn-arrow {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      stroke: currentColor;
     }
-    .btn-orange:hover { box-shadow: 0 12px 40px rgba(135,117,201,0.5); opacity: 0.92; }
 
-    /* ─── HERO ───────────────────────────────────────────────── */
-    #hero {
+    /* ── HERO ─────────────────────────────────────────────── */
+    #home {
+      position: relative;
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 120px 24px 80px;
+      padding: 80px 6% 0;
       overflow: hidden;
-      background: var(--bg);
     }
-    .hero-blob-1 { width: 600px; height: 600px; top: -100px; right: -150px; background: rgba(135,117,201,0.08) !important; }
-    .hero-blob-2 { width: 400px; height: 400px; bottom: 0; left: -100px; background: rgba(0,237,214,0.07) !important; }
 
-    .hero-inner {
-      max-width: 1140px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-      position: relative; z-index: 1;
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
     }
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--purple);
-      background: var(--purple-dim);
-      border: 1px solid rgba(135,117,201,0.25);
-      padding: 6px 14px;
-      border-radius: 99px;
-      margin-bottom: 28px;
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(96,45,142,0.72) 0%, rgba(0,0,0,0.08) 65%),
+        linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 30%);
+      z-index: 1;
     }
-    .hero-eyebrow::before { content: '●'; font-size: 0.5rem; color: var(--purple); }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 560px;
+      padding: 80px 0 100px;
+    }
 
     .hero-title {
-      font-size: clamp(2.8rem, 5.5vw, 4.4rem);
-      font-weight: 800;
-      line-height: 1.05;
-      margin-bottom: 24px;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-    .hero-title .accent { color: var(--purple); }
-    .hero-title .accent-orange { color: var(--teal); }
-
-    .hero-subtitle {
-      font-size: 1.1rem;
-      color: #555;
-      margin-bottom: 40px;
-      max-width: 480px;
-      line-height: 1.75;
-    }
-    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 56px; }
-
-    .hero-stats {
-      display: flex;
-      gap: 36px;
-      flex-wrap: wrap;
-    }
-    .stat-item { text-align: left; }
-    .stat-number {
-      font-family: var(--heading);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--purple-dark);
-      line-height: 1;
-    }
-    .stat-number span { color: var(--purple); }
-    .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 4px; font-weight: 400; }
-
-    /* Hero visual — hand sign cards */
-    .hero-visual {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .sign-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      transform: rotate(-3deg);
-    }
-    .sign-card {
-      background: var(--bg);
-      border: 1.5px solid var(--card-border);
-      border-radius: var(--radius);
-      padding: 16px 12px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
-      cursor: default;
-    }
-    .sign-card:hover {
-      transform: translateY(-4px) scale(1.05);
-      border-color: rgba(135,117,201,0.4);
-      box-shadow: 0 8px 32px rgba(135,117,201,0.15);
-    }
-    .sign-card .sign-emoji { font-size: 2.2rem; margin-bottom: 8px; display: block; }
-    .sign-card .sign-letter {
-      font-family: var(--heading);
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--purple);
-      display: block;
-    }
-    .sign-card .sign-name { font-size: 0.72rem; color: var(--muted); display: block; font-weight: 300; }
-    .sign-card.featured {
-      border-color: rgba(135,117,201,0.45);
-      background: rgba(135,117,201,0.06);
-      box-shadow: 0 0 30px rgba(135,117,201,0.15);
-    }
-    .hero-visual-label {
-      position: absolute;
-      bottom: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.78rem;
-      color: var(--purple);
-      white-space: nowrap;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .hero-visual-label::before,
-    .hero-visual-label::after {
-      content: ''; display: block; width: 30px; height: 1px;
-      background: var(--purple-dim);
-    }
-
-    /* floating animation */
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(-3deg); }
-      50% { transform: translateY(-12px) rotate(-3deg); }
-    }
-    .sign-grid { animation: float 5s ease-in-out infinite; }
-
-    /* pulse dot */
-    @keyframes pulse-ring {
-      0% { transform: scale(0.8); opacity: 1; }
-      100% { transform: scale(2); opacity: 0; }
-    }
-    .pulse-dot {
-      position: absolute;
-      top: 20px; right: 20px;
-      width: 12px; height: 12px;
-    }
-    .pulse-dot::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: var(--purple);
-      border-radius: 50%;
-      animation: pulse-ring 1.8s ease-out infinite;
-    }
-    .pulse-dot::after {
-      content: '';
-      position: absolute; inset: 2px;
-      background: var(--purple);
-      border-radius: 50%;
-    }
-
-    /* ─── SECTION HEADERS ────────────────────────────────────── */
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--purple);
-      margin-bottom: 16px;
-    }
-    .section-label::before { content: ''; display: block; width: 20px; height: 2px; background: var(--purple); border-radius: 2px; }
-
-    .section-title {
-      font-size: clamp(1.9rem, 3.5vw, 2.8rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 16px;
-      color: var(--purple);
-    }
-    .section-subtitle {
-      font-size: 1.05rem;
-      color: var(--muted);
-      line-height: 1.75;
-      max-width: 600px;
+      font-size: clamp(36px, 4.5vw, 58px);
       font-weight: 300;
-    }
-    .section-header { margin-bottom: 56px; }
-
-    /* ─── SOBRE / APRESENTAÇÃO ───────────────────────────────── */
-    #apresentacao {
-      padding: 120px 24px;
-      background: var(--bg);
-    }
-    #apresentacao::before {
-      content: '';
-      position: absolute; left: 0; right: 0; top: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(135,117,201,0.2), transparent);
-    }
-    .sobre-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .sobre-text p {
-      color: #555;
-      margin-bottom: 20px;
-      line-height: 1.85;
-      font-weight: 300;
-    }
-    .sobre-text p strong { color: var(--text); font-weight: 700; }
-    .sobre-text a { color: var(--purple); text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color var(--transition); }
-    .sobre-text a:hover { text-decoration-color: var(--purple); }
-
-    .callout-cards { display: flex; flex-direction: column; gap: 16px; }
-    .callout-card {
-      background: var(--bg);
-      border: 1.5px solid var(--card-border);
-      border-radius: var(--radius);
-      padding: 24px 28px;
-      display: flex;
-      gap: 18px;
-      align-items: flex-start;
-      transition: border-color var(--transition), transform var(--transition);
-    }
-    .callout-card:hover {
-      border-color: var(--purple);
-      transform: translateX(4px);
-    }
-    .callout-icon {
-      width: 44px; height: 44px;
-      min-width: 44px;
-      background: var(--purple-dim);
-      border: 1px solid rgba(135,117,201,0.2);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-    }
-    .callout-card h4 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-      color: var(--purple-dark);
-    }
-    .callout-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; margin: 0; font-weight: 300; }
-
-    /* ─── RECURSOS ───────────────────────────────────────────── */
-    #recursos {
-      padding: 120px 24px;
-      background: var(--bg2);
-    }
-    .recursos-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .recurso-card {
-      background: var(--bg);
-      border: 1.5px solid var(--card-border);
-      border-radius: var(--radius);
-      padding: 40px 32px;
-      position: relative;
-      overflow: hidden;
-      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
-    }
-    .recurso-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--cta-gradient);
-      opacity: 0;
-      transition: opacity var(--transition);
-    }
-    .recurso-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--purple);
-      box-shadow: 0 20px 60px rgba(135,117,201,0.15);
-    }
-    .recurso-card:hover::before { opacity: 1; }
-    .recurso-number {
-      font-family: var(--heading);
-      font-size: 4rem;
-      font-weight: 700;
-      color: rgba(135,117,201,0.06);
-      position: absolute;
-      top: 16px; right: 20px;
-      line-height: 1;
-      user-select: none;
-    }
-    .recurso-icon {
-      width: 56px; height: 56px;
-      background: var(--purple-dim);
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem;
-      margin-bottom: 24px;
-      border: 1px solid rgba(135,117,201,0.25);
-    }
-    .recurso-card h3 {
-      font-size: 1.25rem;
-      margin-bottom: 12px;
-      color: var(--purple-dark);
-    }
-    .recurso-card p { font-size: 0.92rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
-
-    /* ─── CTA BANNER ─────────────────────────────────────────── */
-    #plataforma {
-      padding: 80px 24px;
-      background: var(--bg);
-    }
-    .cta-banner {
-      background: linear-gradient(135deg, rgba(135,117,201,0.08) 0%, rgba(0,237,214,0.06) 100%);
-      border: 1.5px solid rgba(135,117,201,0.2);
-      border-radius: 24px;
-      padding: 80px 64px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-banner::before {
-      content: '';
-      position: absolute;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(135,117,201,0.12), transparent 70%);
-      top: -100px; right: -80px;
-      border-radius: 50%;
-    }
-    .cta-banner::after {
-      content: '';
-      position: absolute;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(0,237,214,0.1), transparent 70%);
-      bottom: -60px; left: -60px;
-      border-radius: 50%;
-    }
-    .cta-banner h2 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      margin-bottom: 16px;
-      position: relative; z-index: 1;
-      color: var(--purple-dark);
-    }
-    .cta-banner p {
-      font-size: 1.1rem;
-      color: var(--muted);
-      margin-bottom: 40px;
-      position: relative; z-index: 1;
-    }
-    .cta-banner .btn { position: relative; z-index: 1; font-size: 1.05rem; padding: 16px 40px; }
-
-    /* ─── PESQUISA ───────────────────────────────────────────── */
-    #pesquisa {
-      padding: 120px 24px;
-      background: var(--bg2);
-    }
-    #pesquisa::before {
-      content: '';
-      position: absolute; left: 0; right: 0; top: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(135,117,201,0.2), transparent);
-    }
-    .pesquisa-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .pesquisa-text p {
-      color: var(--muted);
-      margin-bottom: 20px;
-      line-height: 1.85;
-    }
-    .pesquisa-text p strong { color: var(--text); font-weight: 700; }
-    .pesquisa-steps { list-style: none; margin: 28px 0; display: flex; flex-direction: column; gap: 16px; }
-    .pesquisa-steps li {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      font-size: 0.95rem;
-      color: var(--muted);
-      font-weight: 300;
-    }
-    .pesquisa-steps li a { color: var(--purple); font-weight: 600; }
-    .step-num {
-      min-width: 30px; height: 30px;
-      background: var(--purple-dim);
-      border: 1px solid rgba(135,117,201,0.3);
-      color: var(--purple);
-      font-family: var(--heading);
-      font-weight: 700;
-      font-size: 0.85rem;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .pesquisa-disclaimer {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-top: 12px;
-    }
-
-    /* ─── QUEM SOMOS ─────────────────────────────────────────── */
-    #quem-somos {
-      padding: 120px 24px;
-      background: var(--bg2);
-    }
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
-    }
-    .team-card {
-      background: var(--bg);
-      border: 1.5px solid var(--card-border);
-      border-radius: var(--radius);
-      padding: 36px;
-      transition: border-color var(--transition), transform var(--transition);
-    }
-    .team-card:hover {
-      border-color: var(--purple);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(135,117,201,0.12);
-    }
-    .team-header { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
-    .team-avatar {
-      width: 64px; height: 64px; min-width: 64px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple-dim), var(--teal-dim));
-      border: 2px solid var(--card-border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem;
-      overflow: hidden;
-    }
-    .team-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-    .team-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
-    .team-role { font-size: 0.85rem; color: var(--purple); font-weight: 600; }
-    .team-bio { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 20px; font-weight: 300; }
-    .team-lattes {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.83rem;
-      font-weight: 700;
-      color: var(--purple);
-      border: 1.5px solid rgba(135,117,201,0.3);
-      padding: 7px 14px;
-      border-radius: 100px;
-      transition: background var(--transition);
-    }
-    .team-lattes:hover { background: var(--purple-dim); }
-
-    /* ─── FAQ ────────────────────────────────────────────────── */
-    #duvidas {
-      padding: 120px 24px;
-      background: var(--bg);
-    }
-    #duvidas::before {
-      content: '';
-      position: absolute; left: 0; right: 0; top: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(135,117,201,0.2), transparent);
-    }
-    .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
-    .faq-item {
-      background: var(--bg);
-      border: 1.5px solid var(--card-border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: border-color var(--transition);
-    }
-    .faq-item:has(.faq-answer:not([hidden])) {
-      border-color: var(--purple);
-      box-shadow: 0 4px 20px rgba(135,117,201,0.1);
-    }
-    .faq-question {
-      width: 100%;
-      background: none;
-      border: none;
-      color: var(--text);
-      font-weight: 500;
-      font-family: var(--body);
-      font-size: 1rem;
-      font-weight: 700;
-      text-align: left;
-      padding: 22px 28px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      transition: color var(--transition);
-    }
-    .faq-question:hover { color: var(--purple); }
-    .faq-icon {
-      width: 28px; height: 28px; min-width: 28px;
-      background: var(--purple-dim);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; color: var(--purple);
-      transition: transform var(--transition), background var(--transition);
-    }
-    .faq-item.open .faq-icon {
-      transform: rotate(45deg);
-      background: var(--cta-gradient);
       color: #fff;
+      line-height: 1.2;
+      margin-bottom: 32px;
+      letter-spacing: -0.5px;
     }
-    .faq-answer {
-      padding: 0 28px 22px;
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.75;
-      border-top: 1px solid var(--card-border);
-      padding-top: 18px;
-      font-weight: 300;
-    }
-    .faq-answer[hidden] { display: none; }
 
-    /* ─── AVATAR / LIA ──────────────────────────────────────── */
-    #avatar {
-      padding: 120px 24px;
-      text-align: center;
-      background: var(--bg2);
+    .hero-brand {
+      display: block;
+      font-size: clamp(52px, 7vw, 88px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+      background: linear-gradient(110deg, #fff 20%, var(--teal) 60%, var(--lilac-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
     }
-    .avatar-inner { max-width: 680px; margin: 0 auto; }
-    .avatar-badge {
-      display: inline-flex;
+
+    .hero-desc {
+      font-size: clamp(17px, 1.8vw, 22px);
+      font-weight: 300;
+      color: rgba(255,255,255,0.95);
+      line-height: 1.65;
+      margin-bottom: 44px;
+    }
+
+    .hero-desc strong { font-weight: 700; color: #fff; }
+
+    .hero-cta-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* ── BADGE decorativo ─────────────────────────────────── */
+    .badge-strip {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 24px 5%;
+      background: var(--gray-bg);
+      border-bottom: 1px solid rgba(135,117,201,0.1);
+    }
+
+    .badge-item {
+      display: flex;
       align-items: center;
       gap: 10px;
-      background: var(--purple-dim);
-      border: 1.5px solid rgba(135,117,201,0.3);
-      padding: 10px 24px;
-      border-radius: 100px;
-      font-size: 0.9rem;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--lilac);
+    }
+
+    .badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+    }
+
+    /* ── APRESENTAÇÃO — Bloco 1 ──────────────────────────── */
+    #apresentacao {
+      background: var(--white);
+      padding: 100px 7% 88px;
+    }
+
+    .apres-inner {
+      display: flex;
+      gap: 72px;
+      align-items: center;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    /* ── carrossel bento ─────────────────────────────────── */
+    .apres-cards {
+      flex: 0 0 44%;
+      position: relative;
+      height: 480px;
+      /* padding generoso para sombras e cards laterais não serem cortados */
+      padding: 20px 32px;
+      overflow: visible;
+    }
+
+    /* todos os cards compartilham a mesma posição-base */
+    .apres-card {
+      position: absolute;
+      width: 60%;
+      height: 100%;
+      top: 0;
+      left: 20%;
+      border-radius: 26px;
+      overflow: hidden;
+      will-change: transform, opacity, box-shadow;
+      transition:
+        transform  0.85s cubic-bezier(0.34, 1.1, 0.64, 1),
+        opacity    0.85s ease,
+        box-shadow 0.85s ease;
+    }
+
+    .apres-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    /* ── estados do carrossel ─────────────────────────────── */
+
+    /* frente: grande, visível, sombra profunda */
+    .apres-card[data-pos="0"] {
+      z-index: 3;
+      transform: translateX(0) scale(1) rotate(0deg);
+      opacity: 1;
+      box-shadow: 0 20px 60px rgba(96,45,142,0.30), 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    /* direita: menor, levemente rotacionado, parcialmente visível */
+    .apres-card[data-pos="1"] {
+      z-index: 2;
+      transform: translateX(44%) scale(0.82) rotate(4deg);
+      opacity: 0.88;
+      box-shadow: 0 8px 28px rgba(96,45,142,0.16);
+    }
+
+    /* esquerda: menor, rotação oposta, parcialmente visível */
+    .apres-card[data-pos="2"] {
+      z-index: 1;
+      transform: translateX(-44%) scale(0.80) rotate(-4deg);
+      opacity: 0.84;
+      box-shadow: 0 6px 22px rgba(96,45,142,0.13);
+    }
+
+    /* indicador de progresso do carrossel */
+    .apres-dots {
+      display: none;
+    }
+
+    .apres-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--lilac-light);
+      transition: background 0.4s, transform 0.4s;
+      cursor: pointer;
+    }
+
+    .apres-dot.active {
+      background: var(--lilac);
+      transform: scale(1.25);
+    }
+
+    /* texto hierárquico à direita */
+    .apres-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .apres-text h2 {
+      font-size: clamp(40px, 3.8vw, 62px);
+      font-weight: 700;
+      color: var(--lilac);
+      line-height: 1.1;
+    }
+
+    .apres-lead {
+      font-size: clamp(17px, 1.65vw, 20px);
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    .apres-lead strong { font-weight: 700; color: var(--purple); }
+
+    .apres-body {
+      font-size: clamp(15px, 1.35vw, 17px);
+      font-weight: 300;
+      color: #444;
+      line-height: 1.85;
+      border-left: 3px solid var(--teal);
+      padding-left: 18px;
+    }
+
+    .apres-body strong { font-weight: 700; color: var(--text); }
+
+    .apres-note {
+      font-size: clamp(13px, 1.15vw, 15px);
+      font-weight: 300;
+      color: #666;
+      line-height: 1.75;
+      background: var(--gray-bg);
+      border-radius: 14px;
+      padding: 18px 22px;
+    }
+
+    .apres-note strong { font-weight: 600; color: var(--purple); }
+
+    /* ── APRESENTAÇÃO — Bloco 2: FAQ vítreo ──────────────── */
+    .apresentacao-faq {
+      background: linear-gradient(160deg, #f4f2fb 0%, #e8e4f8 100%);
+      padding: 72px 7%;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .faq-box {
+      background: rgba(255,255,255,0.68);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 24px;
+      border: 1px solid rgba(135,117,201,0.18);
+      padding: 40px 38px;
+      box-shadow: 0 4px 24px rgba(135,117,201,0.10);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .faq-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 40px rgba(135,117,201,0.18);
+    }
+
+    .faq-box h3 {
+      font-size: clamp(17px, 1.7vw, 21px);
       font-weight: 700;
       color: var(--purple);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .faq-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+      display: inline-block;
+    }
+
+    .faq-box p {
+      font-size: clamp(14px, 1.25vw, 16px);
+      font-weight: 300;
+      color: #555;
+      line-height: 1.85;
+    }
+
+    .faq-box p strong { font-weight: 600; color: var(--text); }
+
+    /* ── RECURSOS ─────────────────────────────────────────── */
+    #recursos {
+      background: var(--gray-light);
+      padding: 80px 6%;
+      text-align: center;
+    }
+
+    #recursos h2 {
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 700;
+      color: var(--lilac);
+      margin-bottom: 64px;
+    }
+
+    .recursos-grid {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+
+    .recurso-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 40px 32px;
+      max-width: 300px;
+      flex: 1 1 240px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 4px 24px rgba(135,117,201,0.12);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .recurso-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(135,117,201,0.22);
+    }
+
+    .recurso-card img {
+      width: 120px;
+      height: 120px;
+      max-width: 120px;
+      max-height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .recurso-card h3 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--purple);
+    }
+
+    .recurso-card p {
+      font-size: 15px;
+      font-weight: 400;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .recurso-icon-line {
+      width: 40px; height: 3px;
+      border-radius: 2px;
+      background: var(--cta-gradient);
+    }
+
+    /* ── LIA ──────────────────────────────────────────────── */
+    #avatares {
+      position: relative;
+      min-height: 720px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start; /* card à esquerda */
+      overflow: hidden;
+      background: linear-gradient(135deg, #0e0520 0%, #1e0a40 30%, #3a1272 65%, #602d8e 100%);
+    }
+
+    .lia-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      /* contain garante personagem inteira sem corte */
+      object-fit: contain;
+      object-position: 82% top;
+      z-index: 0;
+      transform-origin: right top; /* zoom ancora no canto superior direito */
+      will-change: transform;
+    }
+
+    /* Card de vidro posicionado à esquerda */
+    .lia-content {
+      position: relative;
+      z-index: 2;
+      max-width: 560px;
+      width: 46%;
+      margin-left: 22%;
+      padding: 56px 52px;
+      background: rgba(255, 255, 255, 0.30);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.30);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      text-align: left;
+    }
+
+    .lia-content h2 {
+      font-size: clamp(30px, 3.2vw, 48px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    .lia-content h2 span {
+      color: var(--teal);
+    }
+
+    .lia-content p {
+      font-size: clamp(15px, 1.5vw, 18px);
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.92);
+      line-height: 1.8;
+      margin-bottom: 36px;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.2);
+    }
+
+    .lia-content p strong { font-weight: 700; color: #fff; }
+
+    /* ── PESQUISA ─────────────────────────────────────────── */
+    #pesquisa {
+      background: var(--white);
+      padding: 96px 6%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #pesquisa::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(135,117,201,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    #pesquisa::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 350px; height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,237,214,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    #pesquisa h2 {
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 700;
+      color: var(--lilac);
       margin-bottom: 32px;
     }
-    .avatar-badge .dot { width: 8px; height: 8px; background: var(--purple); border-radius: 50%; animation: pulse-ring 1.8s ease-out infinite; }
-    #avatar .section-title { text-align: center; color: var(--purple-dark); }
-    #avatar .section-subtitle { text-align: center; margin: 0 auto 40px; color: var(--muted); }
 
-    /* ─── FOOTER ─────────────────────────────────────────────── */
+    .pesquisa-card {
+      display: inline-block;
+      max-width: 860px;
+      background: var(--gray-bg);
+      border-radius: 24px;
+      padding: 48px 52px;
+      margin-bottom: 48px;
+      text-align: left;
+      box-shadow: 0 4px 24px rgba(135,117,201,0.1);
+      border-left: 5px solid var(--lilac);
+    }
+
+    .pesquisa-card p {
+      font-size: clamp(15px, 1.5vw, 18px);
+      font-weight: 300;
+      line-height: 1.8;
+      color: #333;
+    }
+
+    .pesquisa-card a {
+      color: var(--purple);
+      font-weight: 600;
+      text-underline-offset: 3px;
+    }
+
+    .pesquisa-card a:hover { color: var(--lilac); }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
     footer {
-      background: var(--bg2);
-      border-top: 1.5px solid rgba(135,117,201,0.15);
-      padding: 64px 24px 40px;
-      position: relative; z-index: 1;
+      background: var(--purple);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 36px 6%;
+      font-size: 14px;
+      font-weight: 300;
     }
+
+    footer a { color: var(--teal); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
     .footer-inner {
-      max-width: 1140px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
-      gap: 64px;
-      margin-bottom: 56px;
-    }
-    .footer-brand { }
-    .footer-logo {
-      font-family: var(--heading);
-      font-size: 1.3rem;
-      font-weight: 700;
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 16px;
-      color: var(--purple-dark);
-    }
-    .footer-logo .logo-icon {
-      width: 32px; height: 32px;
-      background: var(--cta-gradient);
-      border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
-    }
-    .footer-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; max-width: 280px; font-weight: 300; }
-    .footer-contact { margin-top: 20px; font-size: 0.85rem; color: var(--muted); font-weight: 300; }
-    .footer-contact a { color: var(--purple); font-weight: 600; }
-    .footer-col-title { font-family: var(--heading); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 20px; }
-    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .footer-links a {
-      font-size: 0.9rem;
-      color: var(--muted);
-      transition: color var(--transition);
-      display: flex; align-items: center; gap: 6px;
-      font-weight: 300;
-    }
-    .footer-links a:hover { color: var(--purple); }
-    .footer-divider {
-      height: 1px;
-      background: rgba(135,117,201,0.15);
-      max-width: 1140px;
-      margin: 0 auto 28px;
-    }
-    .footer-bottom {
-      max-width: 1140px;
-      margin: 0 auto;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 0.83rem;
-      color: var(--muted);
-      font-weight: 300;
-    }
-    .footer-bottom a { color: var(--muted); transition: color var(--transition); }
-    .footer-bottom a:hover { color: var(--purple); }
-
-    /* ─── SCROLL REVEAL ──────────────────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
     }
 
-    /* ─── RESPONSIVE ─────────────────────────────────────────── */
-    @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
-      .sign-grid { transform: rotate(0deg); }
-      .sign-grid { animation: none; }
-      .sobre-grid, .pesquisa-inner { grid-template-columns: 1fr; gap: 48px; }
-      .recursos-grid { grid-template-columns: 1fr; }
-      .team-grid { grid-template-columns: 1fr; }
-      .footer-inner { grid-template-columns: 1fr; gap: 40px; }
-      .cta-banner { padding: 56px 32px; }
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-    }
-    @media (max-width: 600px) {
-      .hero-ctas { flex-direction: column; }
-      .hero-ctas .btn { justify-content: center; }
-      .hero-stats { gap: 24px; }
-      .cta-banner { padding: 40px 24px; }
-      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .footer-logo img { height: 32px; filter: brightness(10); opacity: 0.85; }
+
+    /* ── DIVIDER TEAL ─────────────────────────────────────── */
+    .teal-divider {
+      height: 4px;
+      background: linear-gradient(90deg, var(--teal), var(--lilac), var(--purple));
     }
 
-    /* ─── MOBILE NAV ─────────────────────────────────────────── */
-    #mobile-nav {
-      display: none;
-      position: fixed;
-      top: 72px; left: 0; right: 0;
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(20px);
-      border-bottom: 1.5px solid rgba(135,117,201,0.15);
-      padding: 16px 24px 24px;
-      z-index: 99;
+    /* ── SECTION CENTER WRAP ──────────────────────────────── */
+    .center { text-align: center; }
+
+    /* ── MOBILE ───────────────────────────────────────────── */
+    .nav-toggle { display: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 4%; height: 68px; }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 68px; left: 0; right: 0;
+        background: rgba(255,255,255,0.98);
+        flex-direction: column;
+        padding: 20px 5%;
+        gap: 20px;
+        border-bottom: 1px solid rgba(135,117,201,0.15);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      }
+
+      .nav-links.open { display: flex; }
+
+      .nav-toggle {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 4px;
+      }
+
+      .nav-toggle span {
+        width: 24px; height: 2px;
+        background: var(--lilac);
+        border-radius: 2px;
+        transition: transform 0.2s;
+      }
+
+      #home { padding-top: 68px; }
+
+      .hero-content { padding: 48px 0 80px; max-width: 100%; }
+
+      /* apresentação mobile */
+      #apresentacao { padding: 60px 5% 52px; }
+
+      .apres-inner { flex-direction: column; gap: 40px; }
+
+      .apres-cards {
+        flex: none;
+        width: 100%;
+        height: 320px;
+      }
+
+      .apresentacao-faq { padding: 48px 5%; }
+
+      .faq-grid { grid-template-columns: 1fr; gap: 18px; }
+
+      .lia-content { padding: 40px 28px; width: 88%; margin-left: auto; margin-right: auto; text-align: center; }
+
+      .pesquisa-card { padding: 32px 24px; }
+
+      .badge-strip { flex-wrap: wrap; gap: 20px; justify-content: flex-start; }
+
+      .footer-inner { flex-direction: column; text-align: center; }
+
+      .recursos-grid { gap: 24px; }
+
+      .btn-cta--primary { font-size: 16px; padding: 14px 32px; }
     }
-    #mobile-nav.open { display: block; }
-    #mobile-nav ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-    #mobile-nav a {
-      display: block;
-      padding: 12px 16px;
-      border-radius: var(--radius-sm);
-      color: var(--muted);
-      font-weight: 400;
-      transition: color var(--transition), background var(--transition);
-    }
-    #mobile-nav a:hover { color: var(--purple); background: var(--purple-dim); }
-    #mobile-nav .btn { width: 100%; text-align: center; justify-content: center; margin-top: 12px; }
   </style>
 </head>
-
 <body>
 
-  <!-- ─── NAVBAR ──────────────────────────────────────────── -->
+  <!-- NAV -->
   <nav id="navbar">
-    <div class="nav-inner">
-      <a href="#" class="nav-logo">
-        <div class="logo-icon">🤟</div>
-        <span class="logo-text">Libras<span>Verso</span></span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="#apresentacao">Apresentação</a></li>
-        <li><a href="#recursos">Recursos</a></li>
-        <li><a href="#pesquisa">Pesquisa</a></li>
-        <li><a href="#avatar">Avatar</a></li>
-        <li><a href="#duvidas">Dúvidas</a></li>
-        <li><a class="btn-nav" href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank">Ir para plataforma 3D →</a></li>
-      </ul>
-      <button class="nav-hamburger" id="hamburger" aria-label="Abrir menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
+    <a href="#home" class="nav-logo">
+      <img src="https://www.figma.com/api/mcp/asset/6cbb1eb6-d945-49ed-aae5-9b60898021d0" alt="LibrasVerso" />
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#apresentacao">Apresentação</a></li>
+      <li><a href="#recursos">Recursos</a></li>
+      <li><a href="#avatares">Avatar</a></li>
+      <li><a href="#pesquisa">A pesquisa</a></li>
+      <li>
+        <a class="btn-cta" href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank" rel="noopener">
+          Ir para plataforma
+        </a>
+      </li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
-  <!-- Mobile nav -->
-  <div id="mobile-nav">
-    <ul>
-      <li><a href="#apresentacao" class="mobile-link">Apresentação</a></li>
-      <li><a href="#recursos" class="mobile-link">Recursos</a></li>
-      <li><a href="#pesquisa" class="mobile-link">Pesquisa</a></li>
-      <li><a href="#avatar" class="mobile-link">Avatar</a></li>
-      <li><a href="#duvidas" class="mobile-link">Dúvidas frequentes</a></li>
-    </ul>
-    <a class="btn btn-primary mobile-link" href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank">Ir para plataforma 3D →</a>
+  <div class="teal-divider"></div>
+
+  <!-- HERO -->
+  <section id="home">
+    <img class="hero-bg" src="https://www.figma.com/api/mcp/asset/fef3bfce-0fff-4a52-85bd-7e5242114032" alt="LibrasVerso hero" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Boas-vindas ao<br><span class="hero-brand">Librasverso</span></h1>
+      <p class="hero-desc">
+        Uma plataforma tridimensional para introdução ao
+        <strong>ensino da Língua Brasileira de Sinais – LIBRAS.</strong>
+        Aprenda o alfabeto datilológico de uma maneira interativa e divertida!
+      </p>
+      <div class="hero-cta-wrap">
+        <a class="btn-cta btn-cta--primary"
+           href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html"
+           target="_blank" rel="noopener">
+          Aprender LIBRAS
+          <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BADGE STRIP -->
+  <div class="badge-strip">
+    <div class="badge-item"><span class="badge-dot"></span>100% gratuito</div>
+    <div class="badge-item"><span class="badge-dot"></span>Ambiente 3D interativo</div>
+    <div class="badge-item"><span class="badge-dot"></span>Avatares personalizáveis</div>
+    <div class="badge-item"><span class="badge-dot"></span>Pesquisa acadêmica UnB</div>
   </div>
 
-  <!-- ─── HERO ─────────────────────────────────────────────── -->
-  <section id="hero">
-    <div class="blob blob-mint hero-blob-1"></div>
-    <div class="blob blob-orange hero-blob-2"></div>
-
-    <div class="hero-inner">
-      <div class="hero-content">
-        <div class="hero-eyebrow">Plataforma educacional gratuita</div>
-        <h1 class="hero-title">
-          Aprenda <span class="accent">LIBRAS</span><br>
-          em um<br>
-          mundo <span class="accent-orange">3D</span>
-        </h1>
-        <p class="hero-subtitle">
-          Uma plataforma tridimensional para introdução ao ensino da Língua Brasileira de Sinais. Aprenda o alfabeto manual de uma maneira interativa e divertida — sem cadastro, sem custo.
-        </p>
-        <div class="hero-ctas">
-          <a href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html"
-             target="_blank"
-             class="btn btn-primary">
-            🤟 Ir para plataforma 3D
-          </a>
-          <a href="#apresentacao" class="btn btn-secondary">Saiba mais</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat-item">
-            <div class="stat-number">26<span>+</span></div>
-            <div class="stat-label">Letras do alfabeto</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">360<span>°</span></div>
-            <div class="stat-label">Visualização do avatar</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">100<span>%</span></div>
-            <div class="stat-label">Gratuito e sem cadastro</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-visual">
-        <div class="pulse-dot"></div>
-        <div class="sign-grid">
-          <div class="sign-card">
-            <span class="sign-emoji">🤙</span>
-            <span class="sign-letter">A</span>
-            <span class="sign-name">Alfa</span>
-          </div>
-          <div class="sign-card featured">
-            <span class="sign-emoji">✌️</span>
-            <span class="sign-letter">B</span>
-            <span class="sign-name">Bravo</span>
-          </div>
-          <div class="sign-card">
-            <span class="sign-emoji">🤞</span>
-            <span class="sign-letter">C</span>
-            <span class="sign-name">Charlie</span>
-          </div>
-          <div class="sign-card">
-            <span class="sign-emoji">🖖</span>
-            <span class="sign-letter">D</span>
-            <span class="sign-name">Delta</span>
-          </div>
-          <div class="sign-card featured">
-            <span class="sign-emoji">👌</span>
-            <span class="sign-letter">E</span>
-            <span class="sign-name">Echo</span>
-          </div>
-          <div class="sign-card">
-            <span class="sign-emoji">🤟</span>
-            <span class="sign-letter">F</span>
-            <span class="sign-name">Foxtrot</span>
-          </div>
-          <div class="sign-card">
-            <span class="sign-emoji">👍</span>
-            <span class="sign-letter">G</span>
-            <span class="sign-name">Golf</span>
-          </div>
-          <div class="sign-card">
-            <span class="sign-emoji">🤘</span>
-            <span class="sign-letter">L</span>
-            <span class="sign-name">Lima</span>
-          </div>
-          <div class="sign-card featured">
-            <span class="sign-emoji">✋</span>
-            <span class="sign-letter">M</span>
-            <span class="sign-name">Mike</span>
-          </div>
-        </div>
-        <div class="hero-visual-label">Alfabeto datilológico LIBRAS</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── APRESENTAÇÃO ─────────────────────────────────────── -->
+  <!-- APRESENTAÇÃO — Bloco 1 -->
   <section id="apresentacao">
-    <div class="container">
-      <div class="sobre-grid">
-        <div class="sobre-text reveal">
-          <div class="section-label">Sobre o projeto</div>
-          <h2 class="section-title">O que é o LibrasVerso?</h2>
-          <p>O <strong>LibrasVerso</strong> é um protótipo de plataforma de ensino de LIBRAS sem fins lucrativos, desenvolvido como parte de um estudo do Programa de Pós-Graduação em Design da <strong>Universidade de Brasília</strong>.</p>
-          <p>O objetivo é apresentar lições básicas da LIBRAS de uma forma divertida e estimulante para despertar a curiosidade e o interesse na língua, promovendo <strong>inclusão por meio da educação</strong>.</p>
-          <p>As lições são apresentadas por personagens animados em 3D e funcionam como <strong>complemento</strong> a aulas com professores — não como substituto de intérpretes humanos.</p>
-          <a href="#pesquisa" class="btn btn-secondary" style="margin-top: 8px; display: inline-flex;">Ver a pesquisa →</a>
+    <div class="apres-inner">
+
+      <!-- Carrossel bento -->
+      <div class="apres-cards" id="apresCarousel">
+        <!-- data-pos inicial: 0=frente 1=direita 2=esquerda -->
+        <div class="apres-card" data-pos="0">
+          <img src="Retângulo 02.png" alt="Intérprete de LIBRAS" />
         </div>
-        <div class="callout-cards reveal">
-          <div class="callout-card">
-            <div class="callout-icon">🤲</div>
-            <div>
-              <h4>O que é LIBRAS?</h4>
-              <p>A Língua Brasileira de Sinais é a principal forma de comunicação dos surdos no Brasil. Não é mímica — é uma língua formal com regras e estrutura próprias.</p>
-            </div>
-          </div>
-          <div class="callout-card">
-            <div class="callout-icon">🔤</div>
-            <div>
-              <h4>Soletração datilológica</h4>
-              <p>O alfabeto manual é útil para apresentar nomes próprios e siglas. Mas a comunicação plena em LIBRAS vai muito além da soletração letra a letra.</p>
-            </div>
-          </div>
-          <div class="callout-card">
-            <div class="callout-icon">🙌</div>
-            <div>
-              <h4>Terminologia correta</h4>
-              <p>A comunidade surda prefere o termo "surdo(a)" ao "deficiente auditivo". Expressões como "mudo" ou "surdo-mudo" são consideradas ofensivas.</p>
-            </div>
-          </div>
+        <div class="apres-card" data-pos="1">
+          <img src="Retângulo 03.png" alt="Criança aprendendo LIBRAS" />
+        </div>
+        <div class="apres-card" data-pos="2">
+          <img src="Retângulo 01.png" alt="Pessoa comunicando em LIBRAS" />
         </div>
       </div>
-    </div>
-  </section>
+      <!-- dots de progresso -->
+      <div class="apres-dots" id="apresDots">
+        <span class="apres-dot active"></span>
+        <span class="apres-dot"></span>
+        <span class="apres-dot"></span>
+      </div>
 
-  <!-- ─── RECURSOS ─────────────────────────────────────────── -->
-  <section id="recursos">
-    <div class="container">
-      <div class="section-header reveal" style="text-align:center;">
-        <div class="section-label" style="justify-content:center;">Funcionalidades</div>
-        <h2 class="section-title">Recursos da plataforma</h2>
-        <p class="section-subtitle" style="margin: 0 auto;">
-          O uso de recursos em 3D oferece vantagens únicas no ensino de LIBRAS. Explore o que a plataforma tem a oferecer.
+      <!-- Texto hierárquico à direita -->
+      <div class="apres-text">
+        <h2>Apresentação</h2>
+
+        <p class="apres-lead">
+          O <strong>Librasverso</strong> é um protótipo de plataforma de ensino de LIBRAS,
+          projeto sem fins lucrativos desenvolvido no âmbito do Programa de Pós-Graduação
+          em Design da <strong>Universidade de Brasília</strong>.
+        </p>
+
+        <p class="apres-body">
+          O objetivo é apresentar <strong>o alfabeto manual de Libras</strong> de forma
+          divertida e estimulante — despertando a curiosidade e o interesse na língua
+          e promovendo inclusão por meio da educação.
+        </p>
+
+        <p class="apres-note">
+          <strong>Importante:</strong> as lições são apresentadas por personagens animados
+          em 3D e não têm a pretensão de substituir intérpretes humanos. O formato deve
+          ser encarado como um complemento a aulas com professores reais.
         </p>
       </div>
-      <div class="recursos-grid">
-        <div class="recurso-card reveal">
-          <div class="recurso-number">01</div>
-          <div class="recurso-icon">🎨</div>
-          <h3>Customização</h3>
-          <p>Mude as características do seu intérprete de LIBRAS tridimensional. Escolha diferentes opções de aparência e cenário para uma experiência personalizada.</p>
-        </div>
-        <div class="recurso-card reveal">
-          <div class="recurso-number">02</div>
-          <div class="recurso-icon">🔄</div>
-          <h3>Interação 3D</h3>
-          <p>Utilize recursos exclusivos do ambiente tridimensional: rotação de câmera em 360° ao redor do avatar e zoom para visualizar os sinais com máxima clareza.</p>
-        </div>
-        <div class="recurso-card reveal">
-          <div class="recurso-number">03</div>
-          <div class="recurso-icon">✨</div>
-          <h3>Diversão garantida</h3>
-          <p>O ambiente tridimensional proporciona uma experiência de aprendizado fora do convencional — envolvente e divertida para explorar a LIBRAS.</p>
-        </div>
-      </div>
+
     </div>
   </section>
 
-  <!-- ─── CTA PLATAFORMA ───────────────────────────────────── -->
-  <section id="plataforma">
-    <div class="container">
-      <div class="cta-banner reveal">
-        <h2>Pronto para aprender com a <span style="color:var(--purple)">Lia</span>?</h2>
-        <p>Conheça a nossa intérprete virtual de LIBRAS em 3D. Sem cadastro, sem custo — apenas aprendizado.</p>
-        <a href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html"
-           target="_blank"
-           class="btn btn-primary">
-          🤟 Ir para plataforma 3D
-        </a>
+  <!-- APRESENTAÇÃO — Bloco 2: perguntas em boxes vítreos -->
+  <section class="apresentacao-faq">
+    <div class="faq-grid">
+
+      <div class="faq-box">
+        <h3><span class="faq-dot"></span>O que é LIBRAS?</h3>
+        <p>
+          <strong>Língua Brasileira de Sinais</strong> — reconhecida oficialmente no Brasil
+          pela Lei 10.436/2002 como meio legal de comunicação e expressão das comunidades
+          surdas. Possui gramática própria, independente do português.
+        </p>
       </div>
+
+      <div class="faq-box">
+        <h3><span class="faq-dot"></span>Por que estudar LIBRAS?</h3>
+        <p>
+          Existem cerca de <strong>10 milhões de pessoas</strong> com algum nível de
+          deficiência auditiva no Brasil (IBGE 2010). Aprender LIBRAS é um ato de inclusão,
+          empatia e ampliação da comunicação com uma comunidade inteira.
+        </p>
+      </div>
+
     </div>
   </section>
 
-  <!-- ─── PESQUISA ─────────────────────────────────────────── -->
+  <!-- RECURSOS -->
+  <section id="recursos">
+    <h2>Recursos da plataforma</h2>
+    <div class="recursos-grid">
+      <div class="recurso-card">
+        <img src="https://www.figma.com/api/mcp/asset/866045c3-a615-4f69-a550-3b4e7d340972" alt="Customização" />
+        <div class="recurso-icon-line"></div>
+        <h3>Customização</h3>
+        <p>Mude características do seu intérprete de LIBRAS tridimensional e escolha diferentes opções de cenário.</p>
+      </div>
+      <div class="recurso-card">
+        <img src="https://www.figma.com/api/mcp/asset/6a90e4d5-0ef3-421f-9fd8-53f2d8a7cbf4" alt="Interação" />
+        <div class="recurso-icon-line"></div>
+        <h3>Interação</h3>
+        <p>Utilize recursos do ambiente 3D para melhor visualizar os sinais: rotação da câmera em torno do avatar e zoom.</p>
+      </div>
+      <div class="recurso-card">
+        <img src="https://www.figma.com/api/mcp/asset/617b866f-71c3-472f-90b9-faba7757770e" alt="Diversão" style="width:60px;height:60px;" />
+        <div class="recurso-icon-line"></div>
+        <h3>Diversão</h3>
+        <p>O uso de uma plataforma tridimensional proporciona uma experiência de aprendizado fora do convencional e divertida.</p>
+      </div>
+    </div>
+    <a class="btn-cta btn-cta--primary"
+       href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html"
+       target="_blank" rel="noopener">
+      Conferir a plataforma
+    </a>
+  </section>
+
+  <!-- LIA -->
+  <section id="avatares">
+    <img class="lia-bg" src="librasverso5.png" alt="Lia – intérprete virtual" />
+    <div class="lia-content">
+      <h2>Aprenda com a <span>Lia</span></h2>
+      <p>
+        A <strong>Lia</strong> é a nossa intérprete virtual de LIBRAS e apresentará sinais
+        indispensáveis. Mude a sua aparência e bons estudos!
+      </p>
+      <a class="btn-cta btn-cta--primary"
+         href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html"
+         target="_blank" rel="noopener">
+        Conhecer a Lia
+        <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- PESQUISA -->
   <section id="pesquisa">
-    <div class="container">
-      <div class="pesquisa-inner">
-        <div class="reveal">
-          <div class="section-label">Academia</div>
-          <h2 class="section-title">A pesquisa</h2>
-          <div class="pesquisa-text">
-            <p>O projeto está sendo desenvolvido no <a href="https://www.ppgdesign.unb.br/" target="_blank"><strong>Mestrado em Design da Universidade de Brasília</strong></a>. O estudo analisa as impressões do público quanto ao uso de recursos tridimensionais em comparação ao uso de animação em 3D sem interação ambiental.</p>
-            <p><strong>Para participar da pesquisa, siga os passos:</strong></p>
-            <ol class="pesquisa-steps">
-              <li>
-                <span class="step-num">1</span>
-                <span>Utilize a plataforma na versão <a href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank"><strong>ambiente tridimensional</strong></a></span>
-              </li>
-              <li>
-                <span class="step-num">2</span>
-                <span>Utilize a plataforma na versão <span style="opacity:0.5;cursor:not-allowed;" title="Link temporariamente indisponível"><strong>vídeo animado em 3D</strong></span> <span style="font-size:0.78rem;color:var(--muted)">(indisponível no momento)</span></span>
-              </li>
-              <li>
-                <span class="step-num">3</span>
-                <span>Responda o <a href="https://forms.gle/UjLpjyXTqHoSd8Yr5" target="_blank"><strong>questionário de pesquisa</strong></a></span>
-              </li>
-            </ol>
-            <p class="pesquisa-disclaimer">⚠️ Apenas para maiores de 18 anos.</p>
-          </div>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;">
-            <a href="https://forms.gle/5G71TRrngJmo2nFH7" target="_blank" class="btn btn-primary">Responder à pesquisa</a>
-            <a href="https://drive.google.com/file/d/1tteAuqz0SqRYIE8U9l5-9jRT7lU2AJwn/view?usp=sharing" target="_blank" class="btn btn-secondary">📄 Termo de consentimento</a>
-          </div>
-        </div>
-        <div class="reveal">
-          <div class="section-label">Nossa equipe</div>
-          <h2 class="section-title" style="font-size:2rem;">Quem somos</h2>
-          <p style="color:var(--muted);margin-bottom:28px;line-height:1.8;">Os membros responsáveis pelo desenvolvimento são do Programa de Pós-Graduação da Universidade de Brasília.</p>
-          <div class="team-grid">
-            <div class="team-card">
-              <div class="team-header">
-                <div class="team-avatar">👨‍🎨</div>
-                <div>
-                  <div class="team-name">Renato Feitosa</div>
-                  <div class="team-role">Mestrando em Design — UnB</div>
-                </div>
-              </div>
-              <p class="team-bio">Graduado em Design pela UFC, mestrando do PPG Design UnB (2021). Diretor de arte, motion designer e ilustrador com mais de quinze anos de experiência.</p>
-              <a href="http://lattes.cnpq.br/7861534945888093" target="_blank" class="team-lattes">Currículo Lattes →</a>
-            </div>
-            <div class="team-card">
-              <div class="team-header">
-                <div class="team-avatar">👨‍🏫</div>
-                <div>
-                  <div class="team-name">Ricardo Fragelli</div>
-                  <div class="team-role">Dr. em Ciências Mecânicas — UnB</div>
-                </div>
-              </div>
-              <p class="team-bio">Doutor pela UnB, pesquisa em design educacional e sistemas adaptativos. Doze prêmios nacionais de instituições como MEC, CAPES e ABED.</p>
-              <a href="http://lattes.cnpq.br/6119310102978688" target="_blank" class="team-lattes">Currículo Lattes →</a>
-            </div>
-          </div>
-          <p style="font-size:0.83rem;color:var(--muted);margin-top:20px;line-height:1.7;">
-            Com colaboração de <strong style="color:var(--purple-dark)">Virgínia Tiradentes Souto</strong> (PPG Design UnB) e coordenação de <strong style="color:var(--purple-dark)">Prof. Tiago Barros Pontes e Silva</strong>.
-          </p>
-        </div>
-      </div>
+    <h2>A pesquisa</h2>
+    <div class="pesquisa-card">
+      <p>
+        O projeto está sendo desenvolvido no
+        <a href="https://www.ppgdesign.unb.br/" target="_blank" rel="noopener">
+          Mestrado em Design da Universidade de Brasília (Brasil)</a>.
+        Pretende-se analisar as impressões do público quanto ao uso de recursos tridimensionais
+        em comparação ao uso de animação em 3D sem a interação de um ambiente tridimensional.
+      </p>
     </div>
+    <br />
+    <a class="btn-cta btn-cta--primary"
+       href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html"
+       target="_blank" rel="noopener">
+      Ir para a plataforma 3D
+      <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
   </section>
 
-  <!-- ─── AVATAR ───────────────────────────────────────────── -->
-  <section id="avatar">
-    <div class="blob blob-orange" style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-    <div class="container">
-      <div class="avatar-inner reveal">
-        <div class="avatar-badge">
-          <span class="dot"></span>
-          Intérprete virtual em 3D
-        </div>
-        <h2 class="section-title">Aprenda com a Lia</h2>
-        <p class="section-subtitle">A Lia é a nossa intérprete virtual de LIBRAS e apresentará sinais indispensáveis do alfabeto. Mude a sua aparência, gire a câmera e bons estudos!</p>
-        <a href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html"
-           target="_blank"
-           class="btn btn-orange" style="font-size:1.05rem;padding:16px 40px;">
-          🤟 Ir para plataforma 3D
-        </a>
-        <p style="font-size:0.82rem;color:var(--muted);margin-top:16px;font-weight:300;">⚠️ Recomendado em computadores. Dispositivos móveis podem apresentar perda de desempenho.</p>
-      </div>
-    </div>
-  </section>
+  <!-- FAQ placeholder -->
+  <div id="faq"></div>
 
-  <!-- ─── FAQ ──────────────────────────────────────────────── -->
-  <section id="duvidas">
-    <div class="container">
-      <div class="section-header reveal" style="text-align:center;">
-        <div class="section-label" style="justify-content:center;">Suporte</div>
-        <h2 class="section-title">Dúvidas frequentes</h2>
-      </div>
-      <div class="faq-list">
-        <div class="faq-item">
-          <button class="faq-question">
-            Preciso realizar um cadastro para participar?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer" hidden>
-            Não. Basta acessar a plataforma e começar a aprender, sem cadastro e sem complicações.
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            O LibrasVerso é um jogo?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer" hidden>
-            Não. O LibrasVerso é uma plataforma de ensino, sem o envolvimento de elementos de gamificação.
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            O estudo envolve algum custo?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer" hidden>
-            Não. O acesso e o uso da plataforma são completamente gratuitos.
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Preciso informar dados pessoais para participar?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer" hidden>
-            Não é necessário informar nenhum dado pessoal para usar a plataforma e nenhuma informação é coletada.
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            A plataforma conta apenas com o ensino do alfabeto manual?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer" hidden>
-            Por enquanto sim. No momento é apenas um protótipo de uma proposta mais robusta, com mais lições básicas de LIBRAS e possibilidades de customização.
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            A plataforma é apenas para surdos?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer" hidden>
-            Não. A plataforma é destinada a todos que pretendem aprender LIBRAS — seja para se comunicar com pessoas surdas ou para exercer a profissão de intérprete.
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Posso customizar o intérprete 3D?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer" hidden>
-            Sim. Atualmente existem algumas opções de customização e novas possibilidades serão implementadas no futuro.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── FOOTER ────────────────────────────────────────────── -->
+  <!-- FOOTER -->
+  <div class="teal-divider"></div>
   <footer>
     <div class="footer-inner">
-      <div class="footer-brand">
-        <div class="footer-logo">
-          <div class="logo-icon">🤟</div>
-          LibrasVerso
-        </div>
-        <p class="footer-desc">Uma plataforma tridimensional para o ensino de LIBRAS — desenvolvida no PPG Design da Universidade de Brasília.</p>
-        <p class="footer-contact">Contato: <a href="mailto:librasverso@gmail.com">librasverso@gmail.com</a></p>
+      <div class="footer-logo">
+        <img src="https://www.figma.com/api/mcp/asset/6cbb1eb6-d945-49ed-aae5-9b60898021d0" alt="LibrasVerso" />
       </div>
-      <div>
-        <div class="footer-col-title">Navegação</div>
-        <ul class="footer-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#apresentacao">Apresentação</a></li>
-          <li><a href="#pesquisa">Pesquisa</a></li>
-          <li><a href="#avatar">Avatar</a></li>
-          <li><a href="#duvidas">Dúvidas frequentes</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Links úteis</div>
-        <ul class="footer-links">
-          <li><a href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank">🤟 Plataforma 3D</a></li>
-          <li><a href="https://forms.gle/5G71TRrngJmo2nFH7" target="_blank">📋 Questionário</a></li>
-          <li><a href="https://drive.google.com/file/d/1tteAuqz0SqRYIE8U9l5-9jRT7lU2AJwn/view?usp=sharing" target="_blank">📄 Termo de consentimento</a></li>
-          <li><a href="https://www.ppgdesign.unb.br/" target="_blank">🎓 PPG Design UnB</a></li>
-        </ul>
-        <div style="margin-top:28px;">
-          <div class="footer-col-title">Agradecimentos</div>
-          <p style="font-size:0.83rem;color:#888;line-height:1.7;font-weight:300;">Decanato de Pós-Graduação (DPG) · Profa. Dra. Virgínia Tiradentes Souto · Prof. Tiago Barros Pontes e Silva · Universidade de Brasília</p>
-        </div>
-      </div>
-    </div>
-    <div class="footer-divider"></div>
-    <div class="footer-bottom">
-      <span>© 2022 LibrasVerso — Todos os direitos reservados</span>
-      <span>Projeto de pesquisa · PPG Design UnB · <a href="#apresentacao">Autoria: Renato Feitosa</a></span>
+      <span>
+        Projeto acadêmico sem fins lucrativos &nbsp;·&nbsp;
+        <a href="https://www.ppgdesign.unb.br/" target="_blank" rel="noopener">PPG Design UnB</a>
+      </span>
+      <a class="btn-cta"
+         href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html"
+         target="_blank" rel="noopener">
+        Acessar plataforma
+      </a>
     </div>
   </footer>
 
-  <!-- ─── JAVASCRIPT ────────────────────────────────────────── -->
   <script>
-    // ── Navbar scroll ────────────────────────────────────────
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 40);
-    });
-    // init navbar bg
-    navbar.style.background = 'var(--bg)';
+    // Mobile menu toggle
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
 
-    // ── Mobile menu ──────────────────────────────────────────
-    const hamburger = document.getElementById('hamburger');
-    const mobileNav = document.getElementById('mobile-nav');
-    hamburger.addEventListener('click', () => {
-      mobileNav.classList.toggle('open');
-    });
-    document.querySelectorAll('.mobile-link').forEach(el => {
-      el.addEventListener('click', () => mobileNav.classList.remove('open'));
-    });
-
-    // ── FAQ accordion ────────────────────────────────────────
-    document.querySelectorAll('.faq-question').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const item   = btn.closest('.faq-item');
-        const answer = item.querySelector('.faq-answer');
-        const isOpen = item.classList.contains('open');
-
-        // close all
-        document.querySelectorAll('.faq-item').forEach(i => {
-          i.classList.remove('open');
-          i.querySelector('.faq-answer').hidden = true;
-        });
-
-        // open clicked (if was closed)
-        if (!isOpen) {
-          item.classList.add('open');
-          answer.hidden = false;
-        }
-      });
-    });
-
-    // ── Scroll reveal ────────────────────────────────────────
-    const revealEls = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          // stagger siblings
-          const siblings = [...entry.target.parentElement.querySelectorAll('.reveal')];
-          const idx = siblings.indexOf(entry.target);
-          entry.target.style.transitionDelay = (idx * 0.08) + 's';
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    revealEls.forEach(el => observer.observe(el));
-
-    // ── Hero stats count-up ──────────────────────────────────
-    function animateValue(el, start, end, suffix, duration) {
-      let startTime = null;
-      const step = (timestamp) => {
-        if (!startTime) startTime = timestamp;
-        const progress = Math.min((timestamp - startTime) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.innerHTML = Math.floor(start + (end - start) * eased) + '<span>' + suffix + '</span>';
-        if (progress < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    }
-
-    const statsObserver = new IntersectionObserver((entries) => {
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          animateValue(document.querySelectorAll('.stat-number')[0], 0, 26, '+', 1200);
-          animateValue(document.querySelectorAll('.stat-number')[1], 0, 360, '°', 1400);
-          animateValue(document.querySelectorAll('.stat-number')[2], 0, 100, '%', 1000);
-          statsObserver.disconnect();
+          const id = entry.target.id;
+          navAnchors.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+          });
         }
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.4 });
+    sections.forEach(s => observer.observe(s));
 
-    statsObserver.observe(document.querySelector('.hero-stats'));
+    // Parallax com zoom na seção Lia
+    const liaBg = document.querySelector('.lia-bg');
+    if (liaBg) {
+      const updateLiaParallax = () => {
+        const section = document.getElementById('avatares');
+        const rect = section.getBoundingClientRect();
+        const viewH = window.innerHeight;
+        // progress: 0 quando a seção entra pelo rodapé, 1 quando sai pelo topo
+        const progress = Math.max(0, Math.min(1,
+          (viewH - rect.top) / (viewH + rect.height)
+        ));
+        // zoom suave: 1.0 → 1.10 conforme rola
+        const scale = 1 + progress * 0.45; // zoom agressivo: 1.0 → 1.45
+        liaBg.style.transform = `scale(${scale})`;
+      };
+      window.addEventListener('scroll', updateLiaParallax, { passive: true });
+      updateLiaParallax(); // estado inicial
+    }
+
+    // Carrossel da seção Apresentação
+    (function () {
+      const cards = [...document.querySelectorAll('#apresCarousel .apres-card')];
+      const dots  = [...document.querySelectorAll('#apresDots .apres-dot')];
+      const N = cards.length;
+      let active = 0;
+
+      function update() {
+        cards.forEach((card, i) => {
+          card.setAttribute('data-pos', (i - active + N) % N);
+        });
+        dots.forEach((d, i) => d.classList.toggle('active', i === active));
+      }
+
+      // clique nos dots para navegar manualmente
+      dots.forEach((dot, i) => dot.addEventListener('click', () => { active = i; update(); }));
+
+      // ciclo automático a cada 3.5 s
+      setInterval(() => { active = (active + 1) % N; update(); }, 3500);
+    })();
+
+    // Navbar shadow on scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.style.boxShadow = window.scrollY > 10
+        ? '0 4px 24px rgba(135,117,201,0.15)'
+        : '0 2px 20px rgba(135,117,201,0.08)';
+    });
   </script>
 </body>
 </html>
