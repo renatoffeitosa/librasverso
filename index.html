@@ -602,32 +602,231 @@
       margin-bottom: 32px;
     }
 
-    .pesquisa-card {
-      display: inline-block;
+    /* caixa de texto com scroll */
+    .pesquisa-scroll-wrap {
       max-width: 860px;
+      margin: 0 auto 56px;
       background: var(--gray-bg);
       border-radius: 24px;
-      padding: 48px 52px;
-      margin-bottom: 48px;
-      text-align: left;
-      box-shadow: 0 4px 24px rgba(135,117,201,0.1);
       border-left: 5px solid var(--lilac);
+      box-shadow: 0 4px 24px rgba(135,117,201,0.10);
+      overflow: hidden;
     }
 
-    .pesquisa-card p {
-      font-size: clamp(15px, 1.5vw, 18px);
+    .pesquisa-scroll-body {
+      max-height: 320px;
+      overflow-y: auto;
+      padding: 40px 48px;
+      text-align: left;
+      scrollbar-width: thin;
+      scrollbar-color: var(--lilac) transparent;
+    }
+
+    .pesquisa-scroll-body::-webkit-scrollbar { width: 6px; }
+    .pesquisa-scroll-body::-webkit-scrollbar-track { background: transparent; }
+    .pesquisa-scroll-body::-webkit-scrollbar-thumb {
+      background: var(--lilac);
+      border-radius: 99px;
+    }
+
+    .pesquisa-scroll-body p {
+      font-size: clamp(14px, 1.3vw, 16px);
       font-weight: 300;
-      line-height: 1.8;
+      line-height: 1.85;
       color: #333;
+      margin-bottom: 18px;
     }
 
-    .pesquisa-card a {
+    .pesquisa-scroll-body p:last-child { margin-bottom: 0; }
+
+    /* fade de indicação de scroll */
+    .pesquisa-scroll-wrap::after {
+      content: '';
+      display: block;
+      height: 36px;
+      margin-top: -36px;
+      background: linear-gradient(to bottom, transparent, var(--gray-bg));
+      pointer-events: none;
+      border-radius: 0 0 24px 24px;
+    }
+
+    /* bloco de publicações */
+    .pesquisa-pub-block {
+      max-width: 860px;
+      margin: 0 auto 56px;
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+    }
+
+    .pesquisa-pub-block h3 {
+      font-size: clamp(22px, 2.2vw, 32px);
+      font-weight: 700;
       color: var(--purple);
-      font-weight: 600;
-      text-underline-offset: 3px;
+      margin-bottom: 12px;
     }
 
-    .pesquisa-card a:hover { color: var(--lilac); }
+    .pub-cta-side {
+      flex: 0 0 240px;
+    }
+
+    .pub-cta-side p {
+      font-size: 15px;
+      font-weight: 300;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .pub-links-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .pub-link-card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: var(--gray-bg);
+      border-radius: 16px;
+      padding: 20px 24px;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .pub-link-card:hover {
+      border-color: var(--lilac-light);
+      box-shadow: 0 6px 24px rgba(135,117,201,0.14);
+      transform: translateY(-2px);
+    }
+
+    .pub-link-icon {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--lilac) 0%, var(--purple) 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .pub-link-icon svg { width: 22px; height: 22px; }
+
+    .pub-link-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 3px;
+    }
+
+    .pub-link-text span {
+      font-size: 13px;
+      font-weight: 300;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .pesquisa-scroll-body { padding: 28px 24px; }
+      .pesquisa-pub-block { flex-direction: column; gap: 28px; }
+      .pub-cta-side { flex: none; width: 100%; }
+    }
+
+    /* ── QUEM SOMOS ───────────────────────────────────────── */
+    #quem-somos {
+      background: var(--gray-bg);
+      padding: 96px 6%;
+      text-align: center;
+    }
+
+    #quem-somos h2 {
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 700;
+      color: var(--lilac);
+      margin-bottom: 16px;
+    }
+
+    #quem-somos .section-sub {
+      font-size: clamp(15px, 1.5vw, 18px);
+      color: #666;
+      font-weight: 300;
+      margin-bottom: 56px;
+    }
+
+    .team-grid {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .team-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px 32px 36px;
+      width: 260px;
+      box-shadow: 0 4px 24px rgba(135,117,201,0.10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .team-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(135,117,201,0.18);
+    }
+
+    .team-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 3px solid var(--lilac-light);
+    }
+
+    .team-avatar-placeholder {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--lilac) 0%, var(--purple) 100%);
+      border: 3px solid var(--lilac-light);
+      flex-shrink: 0;
+    }
+
+    .team-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 6px;
+    }
+
+    .team-role {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal-dark, #00b8a9);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .team-bio {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #555;
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .team-grid { flex-direction: column; align-items: center; }
+      .team-card { width: 100%; max-width: 340px; }
+    }
 
     /* ── FOOTER ───────────────────────────────────────────── */
     footer {
@@ -792,6 +991,7 @@
       <li><a href="#recursos">Recursos</a></li>
       <li><a href="#avatares">Avatar</a></li>
       <li><a href="#pesquisa">A pesquisa</a></li>
+      <li><a href="#quem-somos">Quem somos</a></li>
       <li>
         <a class="btn-cta" href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank" rel="noopener">
           Ir para plataforma
@@ -967,22 +1167,86 @@
   <!-- PESQUISA -->
   <section id="pesquisa">
     <h2>A pesquisa</h2>
-    <div class="pesquisa-card">
-      <p>
-        O projeto está sendo desenvolvido no
-        <a href="https://www.ppgdesign.unb.br/" target="_blank" rel="noopener">
-          Mestrado em Design da Universidade de Brasília (Brasil)</a>.
-        Pretende-se analisar as impressões do público quanto ao uso de recursos tridimensionais
-        em comparação ao uso de animação em 3D sem a interação de um ambiente tridimensional.
-      </p>
+
+    <!-- Texto com scroll -->
+    <div class="pesquisa-scroll-wrap">
+      <div class="pesquisa-scroll-body">
+        <p>O projeto foi desenvolvido no Programa de Pós-graduação em Design da Universidade de Brasília (Brasil). O objetivo principal da pesquisa foi investigar se as possibilidades de customização e interação em ambiente 3D são relevantes para o ensino de LIBRAS em comparação ao ensino com vídeos animados, ou seja, sem possibilidade de customização e interação. Os resultados mostraram que a experiência com o uso de avatar foi considerada satisfatória pelos usuários, sem resistência significativa ao seu uso, tanto na versão interativa como em vídeo. A maioria dos voluntários considerou que o avatar em questão apresentava características suficientes para transmitir os sinais de LIBRAS. Também acreditam que o uso de avatar ajuda a captar a atenção durante as lições e tornam a experiência de aprendizado estimulante.</p>
+        <p>Na avaliação comparativa entre as duas versões, a plataforma 3D foi apontada por 51,9% como modelo mais eficaz e 46,2% acreditam que é o vídeo animado. Algumas questões que são exclusivas da versão em ambiente 3D mostraram-se indispensáveis para a maioria dos usuários, como a possibilidade de customização do avatar, que está relacionada à representatividade. A opção mais citada foi "representatividade cultural" (55,8%), seguida por "diversidade de raças" e "aspectos biofísicos" (50% cada), "diversidade de gênero" (42,3%), "aparência, moda e estilo" (38,5%), "sazonalidades" (26,9%) e "orientação sexual" (23,1%). A maioria também indicou que prefere criar avatares que se aproximem da sua real imagem ou de como se percebem.</p>
+        <p>Além disso, os usuários mostraram majoritariamente o interesse na flexibilidade de mudança da imagem de plano de fundo da plataforma e visualização em torno do avatar, possível apenas na versão em ambiente 3D. Conclui-se que apesar de não ter havido diferença discrepante de avaliação entre os dois formatos, a plataforma 3D sobressai-se à medida que características de customização e flexibilidade de visualização, exclusivas deste formato, mostraram-se importantes na avaliação dos usuários. Este estudo, portanto, destaca aspectos a serem considerados na concepção de ferramentas de aprendizado de LIBRAS, tanto no cuidado com a reprodução dos sinais, quanto na contemplação de recursos de interação e representatividade.</p>
+      </div>
     </div>
-    <br />
+
+    <!-- Publicações -->
+    <div class="pesquisa-pub-block">
+      <div class="pub-cta-side">
+        <h3>Publicações<br />científicas</h3>
+        <p>Acesse os trabalhos acadêmicos que documentam os resultados e a metodologia desta pesquisa.</p>
+      </div>
+      <div class="pub-links-side">
+        <a class="pub-link-card" href="https://proa.ua.pt/index.php/jdmi/article/view/32059" target="_blank" rel="noopener">
+          <div class="pub-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="pub-link-text">
+            <strong>Artigo científico — Revista científica de Portugal</strong>
+            <span>Assessing a 3D digital prototype for teaching the Brazilian sign language alphabet: an alternative for non-programming designers</span>
+          </div>
+        </a>
+        <a class="pub-link-card" href="https://repositorio.unb.br/handle/10482/49022" target="_blank" rel="noopener">
+          <div class="pub-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="pub-link-text">
+            <strong>Dissertação de mestrado — UnB</strong>
+            <span>Avatar e recursos tridimensionais interativos em plataforma digital de ensino de Libras</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
     <a class="btn-cta btn-cta--primary"
        href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html"
        target="_blank" rel="noopener">
       Ir para a plataforma 3D
       <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
+  </section>
+
+  <!-- QUEM SOMOS -->
+  <section id="quem-somos">
+    <h2>Quem somos</h2>
+    <p class="section-sub">A equipe por trás do LibrasVerso</p>
+    <div class="team-grid">
+
+      <div class="team-card">
+        <img class="team-avatar" src="./assets/images/foto_Renato.gif" alt="Foto de Renato Feitosa" />
+        <div class="team-name">Me. Francisco Renato F. Feitosa</div>
+        <div class="team-role">Designer &amp; Pesquisador</div>
+        <p class="team-bio">
+          Doutorando e Mestre em Design pela Universidade de Brasília (2024). Idealizador e desenvolvedor da plataforma LibrasVerso. Pesquisador de interfaces digitais acessíveis, tecnologias 3D e gamificação aplicadas à educação.
+        </p>
+      </div>
+
+      <div class="team-card">
+        <img class="team-avatar" src="./assets/images/foto_Ricardo.gif" alt="Foto de Ricardo Ramos Fragelli" />
+        <div class="team-name">Dr. Ricardo Ramos Fragelli</div>
+        <div class="team-role">Professor &amp; Orientador</div>
+        <p class="team-bio">
+          Pesquisador da área educacional, bacharel e mestre em Engenharia Mecânica e doutor em Ciências Mecânicas pela UnB. Professor da Faculdade de Ciências e Tecnologias em Engenharia, do Mestrado profissional em Matemática e do PPG em Design, onde orienta trabalhos em Design educacional.
+        </p>
+      </div>
+
+      <div class="team-card">
+        <img class="team-avatar" src="./assets/images/foto_Virginia.gif" alt="Foto de Virgínia Tiradentes Souto" />
+        <div class="team-name">Dra. Virgínia Tiradentes Souto</div>
+        <div class="team-role">Professora &amp; Coorientadora</div>
+        <p class="team-bio">
+          Professora titular do Departamento de Design da UnB. Doutora e mestre em Tipografia e Comunicação Gráfica pela Universidade de Reading (Reino Unido), com pós-doutorado pela UFSC. Líder do Grupo de Pesquisa em Design da Informação da UnB (desde 2008) e membro do PPG Design.
+        </p>
+      </div>
+
+    </div>
   </section>
 
   <!-- FAQ placeholder -->
