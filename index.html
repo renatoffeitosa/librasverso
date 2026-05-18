@@ -133,15 +133,11 @@
       align-items: center;
       padding: 80px 6% 0;
       overflow: hidden;
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+      /* background-image via CSS: mais confiável que <img> para imagens de fundo */
+      background-image: url('./assets/images/hero-bg.png');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
     }
 
     .hero-overlay {
@@ -1010,7 +1006,6 @@
 
   <!-- HERO -->
   <section id="home">
-    <img class="hero-bg" src="./assets/images/hero-bg.png" alt="LibrasVerso hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1 class="hero-title">Boas-vindas ao<br><span class="hero-brand">Librasverso</span></h1>
@@ -1117,7 +1112,7 @@
     <div class="recursos-grid">
       <div class="recurso-card" style="position: relative;">
         <div class="recurso-icon-wrap">
-          <img src="./assets/images/icon-01.svg" alt="Customização" style="width:120px;height:120px;">
+          <img src="./assets/images/icon-01.svg" alt="Customização" style="width:80px;height:80px;">
         </div>
         <div class="recurso-icon-line"></div>
         <h3>Customização</h3>
@@ -1125,7 +1120,7 @@
       </div>
       <div class="recurso-card">
         <div class="recurso-icon-wrap">
-          <img src="./assets/images/icon-02.svg" alt="Interação" style="width:120px;height:120px;">
+          <img src="./assets/images/icon-02.svg" alt="Interação" style="width:80px;height:80px;">
         </div>
         <div class="recurso-icon-line"></div>
         <h3>Interação</h3>
@@ -1133,7 +1128,7 @@
       </div>
       <div class="recurso-card">
         <div class="recurso-icon-wrap">
-          <img src="./assets/images/icon-03.svg" alt="Diversão" style="width:60px;height:60px;">
+          <img src="./assets/images/icon-03.svg" alt="Diversão" style="width:80px;height:80px;">
         </div>
         <div class="recurso-icon-line"></div>
         <h3>Diversão</h3>
