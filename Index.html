@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)https://www.librasverso.com.br/#home -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LibrasVerso – Aprenda Libras em 3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- preload: garante que as imagens locais sejam buscadas com prioridade máxima -->
+  <link rel="preload" as="image" href="./assets/images/lia.png">
+  <link rel="preload" as="image" href="./assets/images/Retangulo_01.png">
+  <link rel="preload" as="image" href="./assets/images/Retangulo_02.png">
+  <link rel="preload" as="image" href="./assets/images/Retangulo_03.png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --lilac:    #8775c9;
+      --lilac-light: #c4b8ef;
+      --purple:   #602d8e;
+      --teal:     #00edd6;
+      --white:    #ffffff;
+      --gray-bg:  #f4f2fb;
+      --gray-light: #ededed;
+      --text:     #1a1a1a;
+      --cta-gradient: linear-gradient(115deg, #00edd6 10%, #8775c9 80%, #602d8e 140%);
+      --cta-overlay:  linear-gradient(to bottom, rgba(96,45,142,0.35) 0%, rgba(96,45,142,0) 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(135,117,201,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 80px;
+      box-shadow: 0 2px 20px rgba(135,117,201,0.08);
+    }
+
+    .nav-logo img {
+      height: 40px;
+      width: auto;
+      max-width: 200px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--lilac);
+      font-weight: 700;
+    }
+
+    /* ── BOTÕES CTA ──────────────────────────────────────── */
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--cta-gradient);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1;
+      border: none;
+      border-radius: 100px;
+      padding: 13px 28px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+      box-shadow: 0 4px 18px rgba(96,45,142,0.28);
+      white-space: nowrap;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(96,45,142,0.38);
+      filter: brightness(1.06);
+    }
+
+    /* Variante para CTAs de seção – tamanho único, consistente */
+    .btn-cta--primary {
+      font-size: 17px;
+      padding: 16px 40px;
+      box-shadow: 0 6px 24px rgba(96,45,142,0.3);
+    }
+
+    /* Seta SVG inline dentro do botão */
+    .btn-arrow {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      stroke: currentColor;
+    }
+
+    /* ── HERO ─────────────────────────────────────────────── */
+    #home {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 6% 0;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      z-index: 0;
+      display: block;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 560px;
+      padding: 80px 0 100px;
+    }
+
+    .hero-title {
+      font-size: clamp(36px, 4.5vw, 58px);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 32px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-brand {
+      display: block;
+      font-size: clamp(52px, 7vw, 88px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+      background: linear-gradient(110deg, #fff 20%, var(--teal) 60%, var(--lilac-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: clamp(17px, 1.8vw, 22px);
+      font-weight: 300;
+      color: rgba(255,255,255,0.95);
+      line-height: 1.65;
+      margin-bottom: 44px;
+    }
+
+    .hero-desc strong { font-weight: 700; color: #fff; }
+
+    .hero-cta-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* ── BADGE decorativo ─────────────────────────────────── */
+    .badge-strip {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 24px 5%;
+      background: var(--gray-bg);
+      border-bottom: 1px solid rgba(135,117,201,0.1);
+    }
+
+    .badge-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--lilac);
+    }
+
+    .badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+    }
+
+    /* ── APRESENTAÇÃO — Bloco 1 ──────────────────────────── */
+    #apresentacao {
+      background: var(--white);
+      padding: 100px 7% 88px;
+    }
+
+    .apres-inner {
+      display: flex;
+      gap: 72px;
+      align-items: center;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    /* ── carrossel bento ─────────────────────────────────── */
+    .apres-cards {
+      flex: 0 0 44%;
+      position: relative;
+      height: 480px;
+      /* padding generoso para sombras e cards laterais não serem cortados */
+      padding: 20px 32px;
+      overflow: visible;
+    }
+
+    /* todos os cards compartilham a mesma posição-base */
+    .apres-card {
+      position: absolute;
+      width: 60%;
+      height: 100%;
+      top: 0;
+      left: 20%;
+      border-radius: 40px;
+      overflow: hidden;
+      background: transparent; /* evita fundo branco nos cantos */
+      will-change: transform, opacity, box-shadow;
+      transition:
+        transform  0.85s cubic-bezier(0.34, 1.1, 0.64, 1),
+        opacity    0.85s ease,
+        box-shadow 0.85s ease;
+    }
+
+    .apres-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      border-radius: 40px; /* espelha o border-radius do card para garantir o clip mesmo com transform */
+    }
+
+    /* ── estados do carrossel ─────────────────────────────── */
+
+    /* frente: grande, visível, sombra profunda */
+    .apres-card[data-pos="0"] {
+      z-index: 3;
+      transform: translateX(0) scale(1) rotate(0deg);
+      opacity: 1;
+      box-shadow: 0 20px 60px rgba(96,45,142,0.30), 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    /* direita: menor, levemente rotacionado, parcialmente visível */
+    .apres-card[data-pos="1"] {
+      z-index: 2;
+      transform: translateX(44%) scale(0.82) rotate(4deg);
+      opacity: 0.88;
+      box-shadow: 0 8px 28px rgba(96,45,142,0.16);
+    }
+
+    /* esquerda: menor, rotação oposta, parcialmente visível */
+    .apres-card[data-pos="2"] {
+      z-index: 1;
+      transform: translateX(-44%) scale(0.80) rotate(-4deg);
+      opacity: 0.84;
+      box-shadow: 0 6px 22px rgba(96,45,142,0.13);
+    }
+
+    /* indicador de progresso do carrossel */
+    .apres-dots {
+      display: none;
+    }
+
+    .apres-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--lilac-light);
+      transition: background 0.4s, transform 0.4s;
+      cursor: pointer;
+    }
+
+    .apres-dot.active {
+      background: var(--lilac);
+      transform: scale(1.25);
+    }
+
+    /* texto hierárquico à direita */
+    .apres-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .apres-text h2 {
+      font-size: clamp(40px, 3.8vw, 62px);
+      font-weight: 700;
+      color: var(--lilac);
+      line-height: 1.1;
+    }
+
+    .apres-lead {
+      font-size: clamp(17px, 1.65vw, 20px);
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    .apres-lead strong { font-weight: 700; color: var(--purple); }
+
+    .apres-body {
+      font-size: clamp(15px, 1.35vw, 17px);
+      font-weight: 300;
+      color: #444;
+      line-height: 1.85;
+      border-left: 3px solid var(--teal);
+      padding-left: 18px;
+    }
+
+    .apres-body strong { font-weight: 700; color: var(--text); }
+
+    .apres-note {
+      font-size: clamp(13px, 1.15vw, 15px);
+      font-weight: 300;
+      color: #666;
+      line-height: 1.75;
+      background: var(--gray-bg);
+      border-radius: 14px;
+      padding: 18px 22px;
+    }
+
+    .apres-note strong { font-weight: 600; color: var(--purple); }
+
+    /* ── APRESENTAÇÃO — Bloco 2: FAQ vítreo ──────────────── */
+    .apresentacao-faq {
+      background: linear-gradient(160deg, #f4f2fb 0%, #e8e4f8 100%);
+      padding: 72px 7%;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .faq-box {
+      background: rgba(255,255,255,0.68);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 24px;
+      border: 1px solid rgba(135,117,201,0.18);
+      padding: 40px 38px;
+      box-shadow: 0 4px 24px rgba(135,117,201,0.10);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .faq-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 40px rgba(135,117,201,0.18);
+    }
+
+    .faq-box h3 {
+      font-size: clamp(17px, 1.7vw, 21px);
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .faq-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+      display: inline-block;
+    }
+
+    .faq-box p {
+      font-size: clamp(14px, 1.25vw, 16px);
+      font-weight: 300;
+      color: #555;
+      line-height: 1.85;
+    }
+
+    .faq-box p strong { font-weight: 600; color: var(--text); }
+
+    /* ── RECURSOS ─────────────────────────────────────────── */
+    #recursos {
+      background: var(--gray-light);
+      padding: 80px 6%;
+      text-align: center;
+    }
+
+    #recursos h2 {
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 700;
+      color: var(--lilac);
+      margin-bottom: 64px;
+    }
+
+    .recursos-grid {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+
+    .recurso-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 40px 32px;
+      max-width: 300px;
+      flex: 1 1 240px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 4px 24px rgba(135,117,201,0.12);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .recurso-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(135,117,201,0.22);
+    }
+
+    /* wrapper de altura fixa — garante que todos os ícones
+       ocupem o mesmo espaço vertical, mantendo o alinhamento da base */
+    .recurso-icon-wrap {
+      width: 96px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .recurso-icon-wrap img {
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+    }
+
+    .recurso-card img {
+      object-fit: contain;
+      display: block;
+    }
+
+    .recurso-card h3 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--purple);
+    }
+
+    .recurso-card p {
+      font-size: 15px;
+      font-weight: 400;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .recurso-icon-line {
+      width: 40px; height: 3px;
+      border-radius: 2px;
+      background: var(--cta-gradient);
+    }
+
+    /* ── SCROLL VIDEO + LIA (fusão) ───────────────────────── */
+    #avatares {
+      position: relative;
+      height: 300vh; /* espaço de scroll — 200vh "alimenta" o vídeo */
+    }
+
+    .scroll-video-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: #0e0520;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 6%;
+    }
+
+    #greetingVideo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Card de vidro sobreposto ao vídeo */
+    .lia-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      width: 48%;
+      margin-left: 4%;
+      padding: 52px 48px;
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.30);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.20);
+      text-align: left;
+    }
+
+    .lia-content h2 {
+      font-size: clamp(30px, 3.2vw, 48px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    .lia-content h2 span {
+      color: var(--teal);
+    }
+
+    .lia-content p {
+      font-size: clamp(15px, 1.5vw, 18px);
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.92);
+      line-height: 1.8;
+      margin-bottom: 36px;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.2);
+    }
+
+    .lia-content p strong { font-weight: 700; color: #fff; }
+
+    /* ── VÍDEO ANIMADO ────────────────────────────────────── */
+    #video-animado {
+      background: var(--white);
+      padding: 96px 6%;
+      text-align: center;
+    }
+
+    #video-animado h2 {
+      font-size: clamp(28px, 3vw, 44px);
+      font-weight: 700;
+      color: var(--lilac);
+      margin-bottom: 12px;
+    }
+
+    #video-animado .section-sub {
+      font-size: clamp(15px, 1.5vw, 18px);
+      color: #666;
+      font-weight: 300;
+      margin-bottom: 48px;
+    }
+
+    .video-embed-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(135,117,201,0.18);
+    }
+
+    /* ── PESQUISA ─────────────────────────────────────────── */
+    #pesquisa {
+      background: var(--white);
+      padding: 96px 6%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #pesquisa::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(135,117,201,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    #pesquisa::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 350px; height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,237,214,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    #pesquisa h2 {
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 700;
+      color: var(--lilac);
+      margin-bottom: 32px;
+    }
+
+    /* caixa de texto com scroll */
+    .pesquisa-scroll-wrap {
+      max-width: 860px;
+      margin: 0 auto 56px;
+      background: var(--gray-bg);
+      border-radius: 24px;
+      border-left: 5px solid var(--lilac);
+      box-shadow: 0 4px 24px rgba(135,117,201,0.10);
+      overflow: hidden;
+    }
+
+    .pesquisa-scroll-body {
+      max-height: 320px;
+      overflow-y: auto;
+      padding: 40px 48px;
+      text-align: left;
+      scrollbar-width: thin;
+      scrollbar-color: var(--lilac) transparent;
+    }
+
+    .pesquisa-scroll-body::-webkit-scrollbar { width: 6px; }
+    .pesquisa-scroll-body::-webkit-scrollbar-track { background: transparent; }
+    .pesquisa-scroll-body::-webkit-scrollbar-thumb {
+      background: var(--lilac);
+      border-radius: 99px;
+    }
+
+    .pesquisa-scroll-body p {
+      font-size: clamp(14px, 1.3vw, 16px);
+      font-weight: 300;
+      line-height: 1.85;
+      color: #333;
+      margin-bottom: 18px;
+    }
+
+    .pesquisa-scroll-body p:last-child { margin-bottom: 0; }
+
+    /* fade de indicação de scroll */
+    .pesquisa-scroll-wrap::after {
+      content: '';
+      display: block;
+      height: 36px;
+      margin-top: -36px;
+      background: linear-gradient(to bottom, transparent, var(--gray-bg));
+      pointer-events: none;
+      border-radius: 0 0 24px 24px;
+    }
+
+    /* bloco de publicações */
+    .pesquisa-pub-block {
+      max-width: 860px;
+      margin: 0 auto 56px;
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+    }
+
+    .pesquisa-pub-block h3 {
+      font-size: clamp(22px, 2.2vw, 32px);
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 12px;
+    }
+
+    .pub-cta-side {
+      flex: 0 0 240px;
+    }
+
+    .pub-cta-side p {
+      font-size: 15px;
+      font-weight: 300;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .pub-links-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .pub-link-card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: var(--gray-bg);
+      border-radius: 16px;
+      padding: 20px 24px;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .pub-link-card:hover {
+      border-color: var(--lilac-light);
+      box-shadow: 0 6px 24px rgba(135,117,201,0.14);
+      transform: translateY(-2px);
+    }
+
+    .pub-link-icon {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--lilac) 0%, var(--purple) 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .pub-link-icon svg { width: 22px; height: 22px; }
+
+    .pub-link-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 3px;
+    }
+
+    .pub-link-text span {
+      font-size: 13px;
+      font-weight: 300;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .pesquisa-scroll-body { padding: 28px 24px; }
+      .pesquisa-pub-block { flex-direction: column; gap: 28px; }
+      .pub-cta-side { flex: none; width: 100%; }
+    }
+
+    /* ── QUEM SOMOS ───────────────────────────────────────── */
+    #quem-somos {
+      background: var(--gray-bg);
+      padding: 96px 6%;
+      text-align: center;
+    }
+
+    #quem-somos h2 {
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 700;
+      color: var(--lilac);
+      margin-bottom: 16px;
+    }
+
+    #quem-somos .section-sub {
+      font-size: clamp(15px, 1.5vw, 18px);
+      color: #666;
+      font-weight: 300;
+      margin-bottom: 56px;
+    }
+
+    .team-grid {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .team-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px 32px 36px;
+      width: 260px;
+      box-shadow: 0 4px 24px rgba(135,117,201,0.10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .team-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(135,117,201,0.18);
+    }
+
+    .team-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 3px solid var(--lilac-light);
+    }
+
+    .team-avatar-placeholder {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--lilac) 0%, var(--purple) 100%);
+      border: 3px solid var(--lilac-light);
+      flex-shrink: 0;
+    }
+
+    .team-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 6px;
+    }
+
+    .team-role {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal-dark, #00b8a9);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .team-bio {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #555;
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .team-grid { flex-direction: column; align-items: center; }
+      .team-card { width: 100%; max-width: 340px; }
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
+    footer {
+      background: var(--purple);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 36px 6%;
+      font-size: 14px;
+      font-weight: 300;
+    }
+
+    footer a { color: var(--teal); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo img { height: 32px; filter: brightness(10); opacity: 0.85; }
+
+    /* ── DIVIDER TEAL ─────────────────────────────────────── */
+    .teal-divider {
+      height: 4px;
+      background: linear-gradient(90deg, var(--teal), var(--lilac), var(--purple));
+    }
+
+    /* ── SECTION CENTER WRAP ──────────────────────────────── */
+    .center { text-align: center; }
+
+    /* ── MOBILE ───────────────────────────────────────────── */
+    .nav-toggle { display: none; }
+
+    /* ── TABLET / NOTEBOOK (769px – 1100px) ─────────────────── */
+    @media (min-width: 769px) and (max-width: 1100px) {
+      .lia-content {
+        margin-left: 4%;
+        width: 46%;
+        padding: 40px 36px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 4%; height: 68px; }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 68px; left: 0; right: 0;
+        background: rgba(255,255,255,0.98);
+        flex-direction: column;
+        padding: 20px 5%;
+        gap: 20px;
+        border-bottom: 1px solid rgba(135,117,201,0.15);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      }
+
+      .nav-links.open { display: flex; }
+
+      .nav-toggle {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 4px;
+      }
+
+      .nav-toggle span {
+        width: 24px; height: 2px;
+        background: var(--lilac);
+        border-radius: 2px;
+        transition: transform 0.2s;
+      }
+
+      #home { padding-top: 68px; }
+
+      .hero-content { padding: 48px 0 80px; max-width: 100%; }
+
+      /* apresentação mobile */
+      #apresentacao { padding: 60px 5% 52px; }
+
+      .apres-inner { flex-direction: column; gap: 40px; }
+
+      .apres-cards {
+        flex: none;
+        width: 100%;
+        height: 320px;
+      }
+
+      .apresentacao-faq { padding: 48px 5%; }
+
+      .faq-grid { grid-template-columns: 1fr; gap: 18px; }
+
+      /* Lia mobile: box centralizado na parte inferior */
+      .scroll-video-sticky {
+        align-items: flex-end;
+        justify-content: center;
+        padding: 0 0 40px;
+      }
+      .lia-content {
+        padding: 28px 22px;
+        width: 88%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      .pesquisa-card { padding: 32px 24px; }
+
+      .badge-strip { flex-wrap: wrap; gap: 20px; justify-content: flex-start; }
+
+      .footer-inner { flex-direction: column; text-align: center; }
+
+      .recursos-grid { gap: 24px; }
+
+      .btn-cta--primary { font-size: 16px; padding: 14px 32px; }
+    }
+  </style>
+<style>[vw] [vw-access-button]{display:none;flex-direction:row-reverse;width:40px;height:40px;cursor:pointer;overflow:hidden;position:absolute;border-radius:8px;transition:all 0.5s ease;right:0;left:auto}[vw] [vw-access-button] img{max-height:40px;transition:all 0.5s ease;border-radius:8px;opacity:1 !important;visibility:visible !important}[vw] [vw-access-button] .vp-access-button{width:40px;height:40px;z-index:1}[vw] [vw-access-button] .vp-pop-up{position:absolute;height:40px;min-width:150px;z-index:0;left:0;right:auto}[vw] [vw-access-button]:hover{width:200px}[vw] [vw-access-button].isLeft{flex-direction:row;left:0;right:auto}[vw] [vw-access-button].isLeft .vp-pop-up{left:auto;right:0}[vw] [vw-access-button].isTopOrBottom:hover{bottom:-20px;top:0;margin-right:-80px}[vw] [vw-access-button].active{display:flex}
+</style><style>[vw].left [vw-plugin-wrapper]{float:left}[vw] [vw-plugin-wrapper]{position:relative;display:none;width:300px;height:100%;float:right;background:white;-webkit-box-shadow:0px 0px 15px rgba(0,0,0,0.2);-moz-box-shadow:0px 0px 15px rgba(0,0,0,0.2);box-shadow:0px 0px 15px rgba(0,0,0,0.2);border-radius:12px;-moz-border-radius:12px;-webkit-border-radius:12px}[vw] [vw-plugin-wrapper].active{display:-webkit-flex;display:flex;flex-direction:column;-webkit-flex-direction:column;height:450px;max-width:100%;min-height:100%}
+</style><style>div[vw]{position:fixed;max-width:95vw;min-height:40px;min-width:40px;z-index:2147483645 !important;display:none;margin:10px !important}div[vw].enabled{display:block}div[vw].active{margin-top:-285px}div[vw].left{left:0;right:initial}
+</style></head>
+<body data-new-gr-c-s-check-loaded="14.1292.0" data-gr-ext-installed="">
+
+  <!-- NAV -->
+  <nav id="navbar" style="box-shadow: rgba(135, 117, 201, 0.08) 0px 2px 20px;">
+    <a href="https://www.librasverso.com.br/#home" class="nav-logo">
+      <img src="./assets/images/nav-logo-top.svg" alt="LibrasVerso">
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="https://www.librasverso.com.br/#home" class="active">Home</a></li>
+      <li><a href="https://www.librasverso.com.br/#apresentacao" class="">Apresentação</a></li>
+      <li><a href="https://www.librasverso.com.br/#recursos" class="">Recursos</a></li>
+      <li><a href="https://www.librasverso.com.br/#avatares" class="">Avatar</a></li>
+      <li><a href="https://www.librasverso.com.br/#pesquisa" class="">A pesquisa</a></li>
+      <li><a href="https://www.librasverso.com.br/#quem-somos" class="">Quem somos</a></li>
+      <li>
+        <a class="btn-cta" href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank" rel="noopener">
+          Ir para plataforma
+        </a>
+      </li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="teal-divider"></div>
+
+  <!-- HERO -->
+  <section id="home">
+    <img class="hero-bg" src="assets/images/hero-bg.png" alt="">
+    <div class="hero-content">
+      <h1 class="hero-title">Boas-vindas ao<br><span class="hero-brand">Librasverso</span></h1>
+      <p class="hero-desc">
+        Uma plataforma tridimensional para introdução ao
+        <strong>ensino da Língua Brasileira de Sinais – Libras.</strong>
+        Aprenda o alfabeto datilológico de uma maneira interativa e divertida!
+      </p>
+      <div class="hero-cta-wrap">
+        <a class="btn-cta btn-cta--primary" href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank" rel="noopener">
+          Aprender Libras
+          <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BADGE STRIP -->
+  <div class="badge-strip">
+    <div class="badge-item"><span class="badge-dot"></span>100% gratuito</div>
+    <div class="badge-item"><span class="badge-dot"></span>Ambiente 3D interativo</div>
+    <div class="badge-item"><span class="badge-dot"></span>Avatares personalizáveis</div>
+    <div class="badge-item"><span class="badge-dot"></span>Pesquisa acadêmica UnB</div>
+  </div>
+
+  <!-- APRESENTAÇÃO — Bloco 1 -->
+  <section id="apresentacao">
+    <div class="apres-inner">
+
+      <!-- Carrossel bento -->
+      <div class="apres-cards" id="apresCarousel">
+        <!-- data-pos inicial: 0=frente 1=direita 2=esquerda -->
+        <div class="apres-card" data-pos="1">
+          <img src="./assets/images/Retangulo_02.png" alt="Intérprete de Libras">
+        </div>
+        <div class="apres-card" data-pos="2">
+          <img src="./assets/images/Retangulo_03.png" alt="Criança aprendendo Libras">
+        </div>
+        <div class="apres-card" data-pos="0">
+          <img src="./assets/images/Retangulo_01.png" alt="Pessoa comunicando em Libras">
+        </div>
+      </div>
+      <!-- dots de progresso -->
+      <div class="apres-dots" id="apresDots">
+        <span class="apres-dot"></span>
+        <span class="apres-dot"></span>
+        <span class="apres-dot active"></span>
+      </div>
+
+      <!-- Texto hierárquico à direita -->
+      <div class="apres-text">
+        <h2>Apresentação</h2>
+
+        <p class="apres-lead">
+          O <strong>Librasverso</strong> é um protótipo de plataforma de ensino de Libras,
+          projeto sem fins lucrativos desenvolvido no âmbito do Programa de Pós-Graduação
+          em Design da <strong>Universidade de Brasília</strong>.
+        </p>
+
+        <p class="apres-body">
+          O objetivo é apresentar <strong>o alfabeto manual de Libras</strong> de forma
+          divertida e estimulante — despertando a curiosidade e o interesse na língua
+          e promovendo inclusão por meio da educação.
+        </p>
+
+        <p class="apres-note">
+          <strong>Importante:</strong> as lições são apresentadas por personagens animados
+          em 3D e não têm a pretensão de substituir intérpretes humanos. O formato deve
+          ser encarado como um complemento a aulas com professores reais.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- APRESENTAÇÃO — Bloco 2: perguntas em boxes vítreos -->
+  <section class="apresentacao-faq">
+    <div class="faq-grid">
+
+      <div class="faq-box">
+        <h3><span class="faq-dot"></span>O que é Libras?</h3>
+        <p>
+          <strong>Língua Brasileira de Sinais</strong> — reconhecida oficialmente no Brasil
+          pela Lei 10.436/2002 como meio legal de comunicação e expressão das comunidades
+          surdas. Possui gramática própria, independente do português.
+        </p>
+      </div>
+
+      <div class="faq-box">
+        <h3><span class="faq-dot"></span>Por que estudar Libras?</h3>
+        <p>
+          Existem cerca de <strong>10 milhões de pessoas</strong> com algum nível de
+          deficiência auditiva no Brasil (IBGE 2010). Aprender Libras é um ato de inclusão,
+          empatia e ampliação da comunicação com uma comunidade inteira.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RECURSOS -->
+  <section id="recursos">
+    <h2>Recursos da plataforma</h2>
+    <div class="recursos-grid">
+      <div class="recurso-card" style="position: relative;">
+        <div class="recurso-icon-wrap">
+          <img src="./assets/images/icon-01.svg" alt="Customização">
+        </div>
+        <div class="recurso-icon-line"></div>
+        <h3>Customização</h3>
+        <p>Mude características do seu intérprete de Libras tridimensional e escolha diferentes opções de cenário.</p>
+      </div>
+      <div class="recurso-card">
+        <div class="recurso-icon-wrap">
+          <img src="./assets/images/icon-02.svg" alt="Interação">
+        </div>
+        <div class="recurso-icon-line"></div>
+        <h3>Interação</h3>
+        <p>Utilize recursos do ambiente 3D para melhor visualizar os sinais: rotação da câmera em torno do avatar e zoom.</p>
+      </div>
+      <div class="recurso-card">
+        <div class="recurso-icon-wrap">
+          <img src="./assets/images/icon-03.svg" alt="Diversão">
+        </div>
+        <div class="recurso-icon-line"></div>
+        <h3>Diversão</h3>
+        <p>O uso de uma plataforma tridimensional proporciona uma experiência de aprendizado fora do convencional e divertida.</p>
+      </div>
+    </div>
+    <a class="btn-cta btn-cta--primary" href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank" rel="noopener">
+      Conferir a plataforma
+    </a>
+  </section>
+
+  <!-- SCROLL VIDEO + LIA (fusão) -->
+  <section id="avatares">
+    <div class="scroll-video-sticky">
+      <video id="greetingVideo" muted playsinline preload="auto" disablePictureInPicture>
+        <source src="assets/videos/saudacao.mp4" type="video/mp4">
+      </video>
+      <div class="lia-content">
+        <h2>Aprenda com a <span>Lia</span></h2>
+        <p>
+          A <strong>Lia</strong> é a nossa intérprete virtual de Libras e apresentará o alfabeto manual. Mude a sua aparência, manipule a visualização e reproduza os sinais quantas vezes forem necessárias. Bom aprendizado!
+        </p>
+        <a class="btn-cta btn-cta--primary" href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank" rel="noopener">
+          Conhecer a Lia
+          <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- VÍDEO ANIMADO -->
+  <section id="video-animado">
+    <h2>Aprenda com a versão em vídeo animado</h2>
+    <p class="section-sub">Assista à lição do alfabeto manual de Libras em formato de animação</p>
+    <div class="video-embed-wrap">
+      <div style="padding:56.25% 0 0 0;position:relative;">
+        <iframe src="https://player.vimeo.com/video/835222058?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;"
+          title="Animação lição alfabeto em Libras">
+        </iframe>
+      </div>
+    </div>
+  </section>
+  <script src="https://player.vimeo.com/api/player.js"></script>
+
+  <!-- PESQUISA -->
+  <section id="pesquisa">
+    <h2>A pesquisa</h2>
+
+    <!-- Texto com scroll -->
+    <div class="pesquisa-scroll-wrap">
+      <div class="pesquisa-scroll-body">
+        <p>O projeto foi desenvolvido no Programa de Pós-graduação em Design da Universidade de Brasília (Brasil). O objetivo principal da pesquisa foi investigar se as possibilidades de customização e interação em ambiente 3D são relevantes para o ensino de Libras em comparação ao ensino com vídeos animados, ou seja, sem possibilidade de customização e interação. Os resultados mostraram que a experiência com o uso de avatar foi considerada satisfatória pelos usuários, sem resistência significativa ao seu uso, tanto na versão interativa como em vídeo. A maioria dos voluntários considerou que o avatar em questão apresentava características suficientes para transmitir os sinais de Libras. Também acreditam que o uso de avatar ajuda a captar a atenção durante as lições e tornam a experiência de aprendizado estimulante.</p>
+        <p>Na avaliação comparativa entre as duas versões, a plataforma 3D foi apontada por 51,9% como modelo mais eficaz e 46,2% acreditam que é o vídeo animado. Algumas questões que são exclusivas da versão em ambiente 3D mostraram-se indispensáveis para a maioria dos usuários, como a possibilidade de customização do avatar, que está relacionada à representatividade. A opção mais citada foi "representatividade cultural" (55,8%), seguida por "diversidade de raças" e "aspectos biofísicos" (50% cada), "diversidade de gênero" (42,3%), "aparência, moda e estilo" (38,5%), "sazonalidades" (26,9%) e "orientação sexual" (23,1%). A maioria também indicou que prefere criar avatares que se aproximem da sua real imagem ou de como se percebem.</p>
+        <p>Além disso, os usuários mostraram majoritariamente o interesse na flexibilidade de mudança da imagem de plano de fundo da plataforma e visualização em torno do avatar, possível apenas na versão em ambiente 3D. Conclui-se que apesar de não ter havido diferença discrepante de avaliação entre os dois formatos, a plataforma 3D sobressai-se à medida que características de customização e flexibilidade de visualização, exclusivas deste formato, mostraram-se importantes na avaliação dos usuários. Este estudo, portanto, destaca aspectos a serem considerados na concepção de ferramentas de aprendizado de Libras, tanto no cuidado com a reprodução dos sinais, quanto na contemplação de recursos de interação e representatividade.</p>
+      </div>
+    </div>
+
+    <!-- Publicações -->
+    <div class="pesquisa-pub-block">
+      <div class="pub-cta-side">
+        <h3>Publicações<br>científicas</h3>
+        <p>Acesse os trabalhos acadêmicos que documentam os resultados e a metodologia desta pesquisa.</p>
+      </div>
+      <div class="pub-links-side">
+        <a class="pub-link-card" href="https://proa.ua.pt/index.php/jdmi/article/view/32059" target="_blank" rel="noopener">
+          <div class="pub-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <div class="pub-link-text">
+            <strong>Artigo científico — Revista científica de Portugal</strong>
+            <span>Assessing a 3D digital prototype for teaching the Brazilian sign language alphabet: an alternative for non-programming designers</span>
+          </div>
+        </a>
+        <a class="pub-link-card" href="https://repositorio.unb.br/handle/10482/49022" target="_blank" rel="noopener">
+          <div class="pub-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <div class="pub-link-text">
+            <strong>Dissertação de mestrado — UnB</strong>
+            <span>Avatar e recursos tridimensionais interativos em plataforma digital de ensino de Libras</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- QUEM SOMOS -->
+  <section id="quem-somos">
+    <h2>Quem somos</h2>
+    <p class="section-sub">A equipe por trás do LibrasVerso</p>
+    <div class="team-grid">
+
+      <div class="team-card" style="position: relative;">
+        <img class="team-avatar" src="./assets/images/foto_Renato.gif" alt="Foto de Renato Feitosa">
+        <div class="team-name">Me. Francisco Renato F. Feitosa</div>
+        <div class="team-role">Designer &amp; Pesquisador</div>
+        <p class="team-bio">
+          Doutorando e Mestre em Design pela Universidade de Brasília (2024). Idealizador e desenvolvedor da plataforma LibrasVerso. Pesquisador de interfaces digitais acessíveis, tecnologias 3D e gamificação aplicadas à educação.
+        </p>
+      </div>
+
+      <div class="team-card">
+        <img class="team-avatar" src="./assets/images/foto_Ricardo.gif" alt="Foto de Ricardo Ramos Fragelli">
+        <div class="team-name">Dr. Ricardo Ramos Fragelli</div>
+        <div class="team-role">Professor &amp; Orientador</div>
+        <p class="team-bio">
+          Pesquisador da área educacional, bacharel e mestre em Engenharia Mecânica e doutor em Ciências Mecânicas pela UnB. Professor da Faculdade de Ciências e Tecnologias em Engenharia, do Mestrado profissional em Matemática e do PPG em Design, onde orienta trabalhos em Design educacional.
+        </p>
+      </div>
+
+      <div class="team-card">
+        <img class="team-avatar" src="./assets/images/foto_Virginia.gif" alt="Foto de Virgínia Tiradentes Souto">
+        <div class="team-name">Dra. Virgínia Tiradentes Souto</div>
+        <div class="team-role">Professora &amp; Coorientadora</div>
+        <p class="team-bio">
+          Professora titular do Departamento de Design da UnB. Doutora e mestre em Tipografia e Comunicação Gráfica pela Universidade de Reading (Reino Unido), com pós-doutorado pela UFSC. Líder do Grupo de Pesquisa em Design da Informação da UnB (desde 2008) e membro do PPG Design.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ placeholder -->
+  <div id="faq"></div>
+
+  <!-- FOOTER -->
+  <div class="teal-divider"></div>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="./assets/images/nav-logo-bottom.svg" alt="LibrasVerso">
+      </div>
+      <span>
+        Projeto acadêmico sem fins lucrativos &nbsp;·&nbsp;
+        <a href="https://ppgdesign.unb.br/" target="_blank" rel="noopener">PPG Design UnB</a>
+      </span>
+      <a class="btn-cta" href="https://cdn.soft8soft.com/AROAJSY2GOEHMOFUVPIOE:13622dac55/anima_libras/home.html" target="_blank" rel="noopener">
+        Acessar plataforma
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navAnchors.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(s => observer.observe(s));
+
+    // Parallax removido — vídeo com scroll scrubbing substituiu o .lia-bg
+
+    // Carrossel da seção Apresentação
+    (function () {
+      const cards = [...document.querySelectorAll('#apresCarousel .apres-card')];
+      const dots  = [...document.querySelectorAll('#apresDots .apres-dot')];
+      const N = cards.length;
+      let active = 0;
+
+      function update() {
+        cards.forEach((card, i) => {
+          card.setAttribute('data-pos', (i - active + N) % N);
+        });
+        dots.forEach((d, i) => d.classList.toggle('active', i === active));
+      }
+
+      // clique nos dots para navegar manualmente
+      dots.forEach((dot, i) => dot.addEventListener('click', () => { active = i; update(); }));
+
+      // ciclo automático a cada 3.5 s
+      setInterval(() => { active = (active + 1) % N; update(); }, 3500);
+    })();
+
+    // Navbar shadow on scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.style.boxShadow = window.scrollY > 10
+        ? '0 4px 24px rgba(135,117,201,0.15)'
+        : '0 2px 20px rgba(135,117,201,0.08)';
+    });
+
+    // ── SCROLL SCRUBBING DO VÍDEO ──────────────────────────
+    (function () {
+      const video   = document.getElementById('greetingVideo');
+      const section = document.getElementById('avatares');
+      if (!video || !section) return;
+
+      // Garante que o vídeo começa no frame 0 e fica pausado
+      video.pause();
+      video.currentTime = 0;
+
+      // Aguarda metadados para ter a duração
+      function onReady() {
+        video.currentTime = 0;
+        scrub(); // aplica posição inicial
+      }
+
+      if (video.readyState >= 1) {
+        onReady();
+      } else {
+        video.addEventListener('loadedmetadata', onReady, { once: true });
+      }
+
+      function scrub() {
+        const duration = video.duration;
+        if (!duration) return;
+
+        const rect      = section.getBoundingClientRect();
+        const viewH     = window.innerHeight;
+        const scrolled  = -rect.top;           // quantos px já rolamos dentro da seção
+        const maxScroll = section.offsetHeight - viewH; // total de scroll disponível
+
+        if (scrolled <= 0) {
+          // Seção ainda não chegou ao topo — congela no frame 0
+          video.currentTime = 0;
+        } else if (scrolled >= maxScroll) {
+          // Passou da seção — congela no último frame
+          video.currentTime = duration;
+        } else {
+          // Mapeia progresso de scroll → tempo do vídeo
+          const progress = scrolled / maxScroll;
+          video.currentTime = progress * duration;
+        }
+      }
+
+      window.addEventListener('scroll', scrub, { passive: true });
+    })();
+  </script>
+
+  <!-- VLibras – plugin de acessibilidade em Libras -->
+  <div vw="" class="enabled" style="left: initial; right: 0px; top: 50%; bottom: initial; transform: translateY(calc(-50% - 10px));">
+    <div vw-access-button="" class="active" style=""><img class="vp-access-button" data-src="assets/access_icon.svg?v=20260510" alt="Conteúdo acessível em Libras usando o VLibras Widget com opções dos Avatares Ícaro, Hosana ou Guga." src="./LibrasVerso – Aprenda Libras em 3D_files/access_icon.svg">
+<img class="vp-pop-up" data-src="assets/access_popup.jpg?v=20260510" alt="Conteúdo acessível em Libras usando o VLibras Widget com opções dos Avatares Ícaro, Hosana ou Guga." src="./LibrasVerso – Aprenda Libras em 3D_files/access_popup.jpg">
+</div>
+    <div vw-plugin-wrapper=""><div vp="">
+  <div vp-box=""></div>
+  <div vp-message-box=""></div>
+  <div vp-settings=""></div>
+  <div vp-dictionary=""></div>
+  <div vp-settings-btn=""></div>
+  <div vp-info-screen=""></div>
+  <div vp-suggestion-screen=""></div>
+  <div vp-translator-screen=""></div>
+  <div vp-more-options-screen=""></div>
+  <div vp-emotions-tooltip=""></div>
+  <div vp-main-guide-screen=""></div>
+  <div vp-suggestion-button=""></div>
+  <div vp-rate-box=""></div>
+  <div vp-change-avatar=""></div>
+  <div vp-aux-controls=""></div>
+  <div vp-controls=""></div>
+  <span vp-click-blocker=""></span>
+</div>
+</div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open"><style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style><div aria-label="grammarly-integration" role="group" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
